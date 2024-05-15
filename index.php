@@ -19,7 +19,7 @@ $dbParams = [
 
 $app = new Application(__DIR__, [
     'userClass' => 'User',
-    'db' => $dbParams, // Make sure 'db' key is defined with the database configuration
+    'db' => $dbParams,
 ]);
 
 $app->router->get('/', [UserController::class, 'login']);
