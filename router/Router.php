@@ -1,34 +1,46 @@
 <?php
 
 namespace router;
-
+//use controller\UserController;
+//require_once 'controller/UserController.php';
 class Router
 {
-    protected $routes = [];
+    protected static $routes = [];
 
-    public function get($route, $controller)
+    public static function get($route, $controller)
     {
-        $this->routes['GET'][$route] = $controller;
+        self::$routes['GET'][$route] = $controller;
     }
 
-    public function post($route, $controller)
-    {
-        $this->routes['POST'][$route] = $controller;
-    }
-
-    public function run()
+    public static function run()
     {
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = $_SERVER['REQUEST_URI'];
         $route = strtok($uri, '?');
 
-        if (isset($this->routes[$method][$route])) {
-            $controllerAction = $this->routes[$method][$route];
-            list($controllerName, $action) = explode('@', $controllerAction);
+        if (isset(self::$routes[$method][$route])) {
+            $controllerAction = self::$routes[$method][$route];
+            if (is_array($controllerAction) && count($controllerAction) === 2) {
+                $controllerName = $controllerAction[0];
+                $action = $controllerAction[1];
 
-            require_once __DIR__ . "/controller/$controllerName.php";
-            $controller = new $controllerName();
-            $controller->$action();
+                if (class_exists($controllerName)) {
+                    $controller = new $controllerName();
+
+                    if (method_exists($controller, $action)) {
+                        $controller->$action();
+                    } else {
+                        http_response_code(404);
+                        echo '404 Not Found';
+                    }
+                } else {
+                    http_response_code(404);
+                    echo '404 Not Found';
+                }
+            } else {
+                http_response_code(500);
+                echo 'Internal Server Error';
+            }
         } else {
             http_response_code(404);
             echo '404 Not Found';

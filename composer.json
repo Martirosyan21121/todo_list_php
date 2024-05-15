@@ -1,0 +1,16 @@
+{
+  "name": "vendor_name/todo_list_php",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "IT lab-6",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "thecodeholic/php-mvc-core": "^1.0",
+    "ext-mysqli": "*"
+  }
+}
