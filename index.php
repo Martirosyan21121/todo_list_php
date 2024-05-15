@@ -10,13 +10,17 @@ require_once 'controller/UserController.php';
 
 
 $dbConnection = new DBConnection();
+
 $dbParams = [
-    'host' => $dbConnection->getHost(),
+    'dsn' => 'mysql:host=' . $dbConnection->getHost() . ';dbname=' . $dbConnection->getDatabase(),
     'username' => $dbConnection->getUsername(),
     'password' => $dbConnection->getPassword(),
-    'database' => $dbConnection->getDatabase()
 ];
-$app = new Application(__DIR__, $dbParams);
+
+$app = new Application(__DIR__, [
+    'userClass' => 'User',
+    'db' => $dbParams, // Make sure 'db' key is defined with the database configuration
+]);
 
 $app->router->get('/', [UserController::class, 'login']);
 $app->run();
