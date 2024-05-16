@@ -1,7 +1,7 @@
 <?php
 namespace model;
 use database\DBConnection;
-require_once '../database/DBConnection.php';
+require_once __DIR__ . '/../database/DBConnection.php';
 
 class Todo extends DBConnection
 {

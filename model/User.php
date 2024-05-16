@@ -1,11 +1,13 @@
 <?php
 namespace model;
-use database\DBConnection;
-require_once '../database/DBConnection.php';
 
+
+use database\DBConnection;
+require_once __DIR__ . '/../database/DBConnection.php';
 class User extends DBConnection
 {
-    public function register($username, $email, $password)
+
+public function register($username, $email, $password)
     {
         $sql = "INSERT INTO todo.user (username, email, password) VALUES (?, ?, ?)";
         $stmt = $this->connection->prepare($sql);
@@ -23,7 +25,7 @@ class User extends DBConnection
     {
         $email = $this->connection->real_escape_string($email);
         $sql = "SELECT * FROM todo.user WHERE email='$email'";
-        $result = $this->connection->query($sql);
+        $result = $this->connection->prepare($sql);
         return $result->num_rows > 0;
     }
 
@@ -40,7 +42,7 @@ class User extends DBConnection
         }
         return false;
     }
-    
+
     public function userData($user)
     {
         $_SESSION['user'] = $user;
@@ -52,7 +54,8 @@ class User extends DBConnection
         }
     }
 
-    public function getUserDataByEmail($email) {
+    public function getUserDataByEmail($email)
+    {
         $stmt = $this->connection->prepare("SELECT * FROM todo.user WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -66,7 +69,8 @@ class User extends DBConnection
     }
 
 
-    public function getUserDataById($id) {
+    public function getUserDataById($id)
+    {
         $stmt = $this->connection->prepare("SELECT * FROM todo.user WHERE id = ?");
         $stmt->bind_param("s", $id);
         $stmt->execute();
@@ -79,7 +83,8 @@ class User extends DBConnection
         }
     }
 
-    public function updateUserById($username, $email, $fileId, $userId) {
+    public function updateUserById($username, $email, $fileId, $userId)
+    {
         $sql = "UPDATE todo.user SET username = ?, email = ?, files_id = ? WHERE id = ?";
         $stmt = $this->connection->prepare($sql);
         if (!$stmt) {

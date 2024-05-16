@@ -4,43 +4,41 @@ use mysqli;
 
 class DBConnection
 {
-    private string $host = "localhost";
-    private string $username = "root";
-    private string $password = "";
-    private string $database = "todo";
+    private string $DBhost = "localhost";
+    private string $DBusername = "root";
+    private string $DBpassword = "";
+    private string $DBdatabase = "todo";
 
     protected mysqli $connection;
 
 
     public function __construct()
     {
-       $this->connection = new mysqli($this->host, $this->username, $this->password, $this->database);
+        $this->connection = new mysqli($this->DBhost, $this->DBusername, $this->DBpassword, $this->DBdatabase);
         if ($this->connection->connect_error) {
             die("Connection failed: " . $this->connection->connect_error);
         }
     }
 
-
-    public function getHost(): string
+    public function getDBHost(): string
     {
-        return $this->host;
+        return $this->DBhost;
     }
 
-    // Getter method for username
-    public function getUsername(): string
+    public function getDBUsername(): string
     {
-        return $this->username;
+        return $this->DBusername;
     }
 
-    // Getter method for password
-    public function getPassword(): string
+    public function getDBPassword(): string
     {
-        return $this->password;
+        return $this->DBpassword;
     }
 
-    // Getter method for database
-    public function getDatabase(): string
+    public function getDBDatabase(): string
     {
-        return $this->database;
+        return $this->DBdatabase;
     }
+
+
 }

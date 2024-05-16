@@ -3,7 +3,7 @@
 namespace model;
 use database\DBConnection;
 
-require_once '../database/DBConnection.php';
+require_once __DIR__ . '/../database/DBConnection.php';
 class Admin extends DBConnection
 {
     public function getAllUserData()
