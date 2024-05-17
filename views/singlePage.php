@@ -1,8 +1,6 @@
 <?php
 
 use model\User;
-require_once "../model/User.php";
-session_start();
 ob_start();
 
 ?>
@@ -75,7 +73,6 @@ ob_start();
         $username = $_SESSION['user']['username'];
         $email = $_SESSION['user']['email'];
         $userId = $_SESSION['user']['id'];
-
         if (isset($_SESSION['pic_path'])) {
             $profilePic = $_SESSION['pic_path'];
             if (!$profilePic == null) {

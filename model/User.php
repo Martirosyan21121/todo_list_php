@@ -18,7 +18,7 @@ class User extends DBConnection
 
     public function register($username, $email, $password)
     {
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $hashed_password = md5($password);
         $stmt = $this->connection->prepare("INSERT INTO todo.user (username, email, password) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $username, $email, $hashed_password);
         $success = $stmt->execute();
@@ -34,13 +34,10 @@ class User extends DBConnection
         $result = $stmt->get_result();
         return $result->num_rows > 0;
     }
-
-    // Other methods...
-
+    
     public function login($email, $password)
     {
         $user = $this->findOne($email);
-
         if ($user && password_verify($password, $user['password'])) {
             return true;
         }
