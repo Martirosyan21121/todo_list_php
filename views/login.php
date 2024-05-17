@@ -1,15 +1,3 @@
-<?php
-$wrong_email = '';
-if (isset($_GET['error']) && $_GET['error'] === 'invalid_email') {
-    $wrong_email = 'Invalid email.';
-}
-
-$filed_login = '';
-if (isset($_GET['error']) && $_GET['error'] === 'wrong_login') {
-    $filed_login = 'Wrong email or password';
-}
-
-?>
 
 <!DOCTYPE html>
 <html lang="">
@@ -34,18 +22,18 @@ if (isset($_GET['error']) && $_GET['error'] === 'wrong_login') {
 
     <div class="main-agileinfo">
         <div class="agileits-top">
-            <form action="../loginData/login.php" method="post">
+            <form action="/login" method="post">
                 <input class="text email" type="email" name="email" placeholder="Email" required="">
-                <?php if (!empty($wrong_email)) { ?>
-                    <p style="color: red;"><?php echo $wrong_email; ?></p>
-                <?php } ?>
+                <?php if (!empty($_GET['errors']['email'])): ?>
+                    <p style="color: red;"><?php echo $_GET['errors']['email']; ?></p>
+                <?php endif; ?>
                 <input class="text" type="password" name="password" placeholder="Password" required="">
                 <input type="submit" value="LOGIN">
             </form>
-            <?php if (!empty($filed_login)) { ?>
-                <p style="color: red;"><?php echo $filed_login; ?></p>
-                <br>
-            <?php } ?>
+            <?php if (!empty($_GET['errors']['password'])): ?>
+                <p style="color: red;"><?php echo $_GET['errors']['password']; ?></p>
+            <?php endif; ?>
+
             <p>Don't have an Account? <a href="/register"> Register Now!</a></p>
         </div>
     </div>

@@ -9,31 +9,21 @@ require_once 'vendor/autoload.php';
 require_once 'model/User.php';
 require_once 'controller/UserController.php';
 
-$error_condition = false;
 
-try {
-    $config = [
-        'userClass' => User::class,
-        "db" => [
-            'dsn' => 'mysql:host=localhost;port=3306;dbname=todo',
-            'user' => 'root',
-            'password' => ''
-        ],
-    ];
+$config = [
+    'userClass' => User::class,
+    "db" => [
+        'dsn' => 'mysql:host=localhost;port=3306;dbname=todo',
+        'user' => 'root',
+        'password' => ''
+    ],
+];
 
-    $app = new Application(__DIR__, $config);
+$app = new Application(__DIR__, $config);
 
-    $app->router->get('/', [UserController::class, 'home']);
-    $app->router->get('/register', [UserController::class, 'register']);
+$app->router->get('/', [UserController::class, 'home']);
+$app->router->get('/register', [UserController::class, 'register']);
+$app->router->post('/login', [UserController::class, 'login']);
 
-    if ($error_condition) {
-        throw new Exception("Simulated error condition");
-    }
+$app->run();
 
-    $app->run();
-} catch (Exception $e) {
-    error_log($e->getMessage());
-    $_SESSION['error_message'] = $e->getMessage();
-    header("Location: views/_error.php");
-    exit;
-}

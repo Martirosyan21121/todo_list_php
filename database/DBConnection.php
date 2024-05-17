@@ -20,25 +20,8 @@ class DBConnection
         }
     }
 
-    public function getDBHost(): string
+    public function getConnection(): mysqli
     {
-        return $this->DBhost;
+        return $this->connection;
     }
-
-    public function getDBUsername(): string
-    {
-        return $this->DBusername;
-    }
-
-    public function getDBPassword(): string
-    {
-        return $this->DBpassword;
-    }
-
-    public function getDBDatabase(): string
-    {
-        return $this->DBdatabase;
-    }
-
-
 }
