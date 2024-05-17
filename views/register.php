@@ -1,26 +1,3 @@
-<?php
-
-session_unset();
-
-
-$email_exist = '';
-if (isset($_GET['error']) && $_GET['error'] === 'email_exist') {
-    $email_exist = 'Email already exists.';
-} else if (isset($_GET['error']) && $_GET['error'] === 'invalid_email') {
-    $email_exist = 'Invalid email.';
-}
-
-$username_length = '';
-if (isset($_GET['error']) && $_GET['error'] === 'min_length') {
-    $username_length = "Username minimum length must be at least 5 characters.";
-}
-
-$password_p = '';
-if (isset($_GET['error']) && $_GET['error'] === 'password_pattern') {
-    $password_p = "Password need to be least 8 characters must be used letters(uppercase and lowercase), numbers and symbols. ";
-}
-
-?>
 
 <!DOCTYPE html>
 <html lang="">
@@ -44,7 +21,7 @@ if (isset($_GET['error']) && $_GET['error'] === 'password_pattern') {
     <h1>Please register</h1>
     <div class="main-agileinfo">
         <div class="agileits-top">
-            <form action="../registerData/register_logic.php" method="post" enctype="multipart/form-data">
+            <form action="/register/user" method="post" enctype="multipart/form-data">
                 <input class="text" type="text" name="username" placeholder="Username" required="">
                 <?php if (!empty($username_length)) { ?>
                     <p style="color: red;"><?php echo $username_length; ?></p>

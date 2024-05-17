@@ -24,6 +24,7 @@ $app = new Application(__DIR__, $config);
 $app->router->get('/', [UserController::class, 'home']);
 $app->router->get('/register', [UserController::class, 'register']);
 $app->router->post('/login', [UserController::class, 'login']);
+//$app->router->post('/register/user', [UserController::class, 'register']);
 
 $app->run();
 
