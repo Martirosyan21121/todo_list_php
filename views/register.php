@@ -21,19 +21,25 @@
     <h1>Please register</h1>
     <div class="main-agileinfo">
         <div class="agileits-top">
-            <form action="/register/user" method="post" enctype="multipart/form-data">
+            <form action="/register/user" method="post">
+
                 <input class="text" type="text" name="username" placeholder="Username" required="">
-                <?php if (!empty($username_length)) { ?>
-                    <p style="color: red;"><?php echo $username_length; ?></p>
+                <?php if (!empty($errors['username_length'])) { ?>
+                    <p style="color: red; margin-top: 10px"><?php echo $errors['username_length']; ?></p>
                 <?php } ?>
+
                 <input class="text email" type="email" name="email" placeholder="Email" required="">
-                <?php if (!empty($email_exist)) { ?>
-                    <p style="color: red;"><?php echo $email_exist; ?></p>
+                <?php if (!empty($errors['email_format'])) { ?>
+                    <p style="color: red; margin-top: -10px"><?php echo $errors['email_format']; ?></p>
+                <?php } else if (!empty($errors['email_exists'])){ ?>
+                <p style="color: red; margin-top: -10px"><?php echo $errors['email_exists']; ?></p>
+                <?php }?>
+
+                <input class="text" type="password" name="password" placeholder="Password" required="" style="margin-top: 10px">
+                <?php if (!empty($errors['password_length'])) { ?>
+                    <p style="color: red; margin-top: 10px"><?php echo $errors['password_length']; ?></p>
                 <?php } ?>
-                <input class="text" type="password" name="password" placeholder="Password" required="">
-                <?php if (!empty($password_p)) { ?>
-                    <p style="color: red;"><?php echo $password_p; ?></p>
-                <?php } ?>
+
                 <br>
                 <input type="submit" value="REGISTER">
             </form>
