@@ -57,4 +57,15 @@ class User extends DBConnection
             return null;
         }
     }
+
+    public function userData($user)
+    {
+        $_SESSION['user'] = $user;
+
+        if ($user['user_type'] === 'ADMIN') {
+            header("Location: /adminPage");
+        } else {
+            header("Location: /singlePage");
+        }
+    }
 }

@@ -24,6 +24,7 @@ $app->router->get('/', [UserController::class, 'home']);
 $app->router->get('/register', [UserController::class, 'register']);
 $app->router->post('/register/user', [UserController::class, 'registerUser']);
 $app->router->get('/singlePage', [UserController::class, 'singlePage']);
+$app->router->get('/adminPage', [UserController::class, 'adminSinglePage']);
 
 $app->run();
 
