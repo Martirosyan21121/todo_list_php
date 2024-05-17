@@ -55,10 +55,10 @@ class UserController extends Controller
                 return $this->render('register', ['errors' => $errors]);
             }
 
-
             $registrationResult = $userModel->register($username, $email, $password);
             if ($registrationResult) {
-                header('Location: /singlePage');
+                $userData = $userModel->getUserByEmail($email);
+                $userModel->userData($userData);
                 exit();
             } else {
                 header('Location: /register/user?error=registration_failed');

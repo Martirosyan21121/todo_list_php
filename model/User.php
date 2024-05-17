@@ -34,7 +34,22 @@ class User extends DBConnection
         $result = $stmt->get_result();
         return $result->num_rows > 0;
     }
-    
+
+    public function getUserByEmail($email)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM todo.user WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows == 1) {
+            return $result->fetch_assoc();
+        } else {
+            return null;
+        }
+    }
+
+
     public function login($email, $password)
     {
         $user = $this->findOne($email);
