@@ -12,7 +12,6 @@ class UserController extends Controller
     }
     public function register()
     {
-        die(2);
         return $this->render('register');
     }
 }

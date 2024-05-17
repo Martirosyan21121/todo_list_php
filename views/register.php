@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-
 session_unset();
 
 session_destroy();
@@ -17,7 +15,7 @@ $username_length = '';
 if (isset($_GET['error']) && $_GET['error'] === 'min_length') {
     $username_length = "Username minimum length must be at least 5 characters.";
 }
-die;
+
 $password_p = '';
 if (isset($_GET['error']) && $_GET['error'] === 'password_pattern') {
     $password_p = "Password need to be least 8 characters must be used letters(uppercase and lowercase), numbers and symbols. ";
