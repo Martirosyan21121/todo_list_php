@@ -32,7 +32,7 @@ ob_start();
     <h1>All Users</h1>
 
     <nav class="top-bar">
-        <a href="../view/adminSinglePage.php" class="add-task-button" style="margin-left: 50px">Back</a>
+        <a href="/adminSinglePage.php" class="add-task-button" style="margin-left: 50px">Back</a>
     </nav>
 
     <table>

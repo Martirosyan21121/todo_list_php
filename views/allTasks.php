@@ -30,7 +30,7 @@ require_once '../model/TaskFile.php';
 <body>
 <div class="main-w3layouts wrapper">
     <h1>All tasks</h1>
-    <a href="../view/singlePage.php" class="add-task-button" style="margin-left: 20px">Back to your profile page</a>
+    <a href="/singlePage.php" class="add-task-button" style="margin-left: 20px">Back to your profile page</a>
 
     <div class="cart">
         <?php

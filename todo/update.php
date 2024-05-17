@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $uploaded_image_path = $upload_directory . $file_name;
 
         if (!move_uploaded_file($file_tmp_name, $uploaded_image_path)) {
-            header("Location: ../view/add_task.php?error=file_upload_failed");
+            header("Location: ../views/add_task.php?error=file_upload_failed");
             exit;
         }
 
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($inputDateTime < $currentDateTime) {
-        header("Location: ../view/update_task.php?error=invalid_dateTime_extension");
+        header("Location: ../views/update_task.php?error=invalid_dateTime_extension");
         exit;
     }
 
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $todoFun->handleError('update_failed');
     }
-    header('Location: ../view/addTask.php');
+    header('Location: ../views/addTask.php');
 }
 
 

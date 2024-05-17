@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $statusCount = $todo->findTaskCountByStatus($userId, $status);
             $_SESSION['status3'] = $statusCount;
 
-            header('Location: ../view/singlePage.php');
+            header('Location: ../views/singlePage.php');
             $todoFun->reloadTodoList();
         } else {
             $todoFun->handleError('delete_failed');
@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $statusCount = $todo->findTaskCountByStatus($userId, $status);
         $_SESSION['status3'] = $statusCount;
 
-        header('Location: ../view/singlePage.php');
+        header('Location: ../views/singlePage.php');
 
         $todoFun->reloadTodoList();
     }
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($inputDateTime < $currentDateTime) {
-        header("Location: ../view/addTask.php?error=invalid_dateTime_extension");
+        header("Location: ../views/addTask.php?error=invalid_dateTime_extension");
         exit;
     }
 
@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $uploaded_image_path = $upload_directory . $file_name;
 
             if (!move_uploaded_file($file_tmp_name, $uploaded_image_path)) {
-                header("Location: ../view/add_task.php?error=file_upload_failed");
+                header("Location: ../views/add_task.php?error=file_upload_failed");
                 exit;
             }
 
@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $status = 3;
         $statusCount = $todo->findTaskCountByStatus($userId, $status);
         $_SESSION['status3'] = $statusCount;
-        header("Location: ../view/singlePage.php");
+        header("Location: ../views/singlePage.php");
 
         $todoFun->reloadTodoList();
 

@@ -1,7 +1,6 @@
 <?php
 
 use model\User;
-use router\Router;
 use controller\UserController;
 use database\DBConnection;
 use thecodeholic\phpmvc\Application;
@@ -10,12 +9,9 @@ require_once '../vendor/autoload.php';
 require_once '../model/User.php';
 require_once '../controller/UserController.php';
 require_once '../database/DBConnection.php';
-require_once '../router/Router.php';
-
-$router = new Router();
+include_once __DIR__ . "/../views/_error.php";
 
 $dbConnection = new DBConnection();
-
 $config = [
     'userClass' => User::class,
     "db" => [
@@ -25,12 +21,9 @@ $config = [
     ],
 ];
 
-$app = new Application(__DIR__, $config);
+$app = new Application(dirname(__DIR__), $config);
 
-$router->get('/', function () use ($app) {
-    echo 'Home';
-});
-
-$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+$app->router->get('/', [UserController::class, 'home']);
+$app->router->get('/register', [UserController::class, 'register']);
 
 $app->run();

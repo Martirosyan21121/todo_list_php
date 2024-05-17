@@ -19,6 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tasks = $todo->getAllByUserId($userId);
 
     $_SESSION['allTasks'] = $tasks;
-    header('Location: ../view/allTasks.php');
+    header('Location: ../views/allTasks.php');
 
 }

@@ -23,7 +23,7 @@
     <h1>Page not found 404</h1>
     <br>
 
-    <a class="add-task-button" href="../view/adminSinglePage.php" style="margin-left: 50%">Back</a>
+    <a class="add-task-button" href="/adminSinglePage.php" style="margin-left: 50%">Back</a>
 
     <div class="colorlibcopy-agile">
         <p>© 2024 project ToDo list using PHP</p>

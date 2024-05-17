@@ -62,6 +62,6 @@ if (isset($_GET['delId'])) {
     $adminController = new AdminController();
     $adminController->deleteUserById($_GET['delId']);
 
-    header("Location: ../view/allUsers.php");
+    header("Location: ../views/allUsers.php");
     exit();
 }

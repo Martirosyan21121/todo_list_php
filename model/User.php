@@ -48,9 +48,9 @@ public function register($username, $email, $password)
         $_SESSION['user'] = $user;
 
         if ($user['user_type'] === 'ADMIN') {
-            header("Location: ../view/adminSinglePage.php");
+            header("Location: ../views/adminSinglePage.php");
         } else {
-            header("Location: ../view/singlePage.php");
+            header("Location: ../views/singlePage.php");
         }
     }
 

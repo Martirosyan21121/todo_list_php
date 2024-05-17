@@ -1,14 +1,21 @@
 <?php
+
+use model\TaskFile;
+
+session_start();
+require_once '../model/TaskFile.php';
+
 $invalid_dataTime = '';
 if (isset($_GET['error']) && $_GET['error'] === 'invalid_dateTime_extension') {
     $invalid_dataTime = "Please input active date and time (more than 10 minute of current time)";
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="">
 <head>
-    <title>Add task page</title>
+    <title>Update Task</title>
     <link rel="icon" href="/img/logo/logo.jpg" type="image/gif" sizes="any">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -24,46 +31,50 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_dateTime_extension') {
 </head>
 <body>
 <div class="main-w3layouts wrapper">
-    <h1>Add task</h1>
+    <h1>Update Task</h1>
 
     <div class="main-agileinfo">
         <div class="agileits-top">
 
-            <form action="../todo/add_task.php" method="post" enctype="multipart/form-data">
-                <input class="text" type="text" name="text" placeholder="Text" required="">
-                <br>
-                <input type="datetime-local" name="dateTime" placeholder="Data time" step="60" required="">
-
-                <span style="color: red; margin-left: 10px">Deadline</span>
-                <?php if (!empty($invalid_dataTime)) { ?>
-                    <p style="color: red; margin-top: 10px"><?php echo $invalid_dataTime; ?></p>
-                <?php } ?>
+            <form action="../todo/update.php" method="post" enctype="multipart/form-data">
 
                 <?php
-                session_start();
-                if (isset($_SESSION['id'])) {
-                    $id = $_SESSION['id'];
+                if (isset($_SESSION['task'])) {
+                    $taskFile = new TaskFile();
+                    $id_update = $_SESSION['task']['id'];
+                    $text = $_SESSION['task']['text'];
+                    $date_time = $_SESSION['task']['date_time'];
                     ?>
-                    <input class="text" type="hidden" name="id" value="<?php echo $id ?>">
+
+                    <input class="text" type="text" name="text" placeholder="Text" value="<?php echo $text ?>" required="">
+                    <br>
+                    <input type="datetime-local"  name="dateTime" value="<?php echo $date_time?>" placeholder="Data time" required="">
+                    <span style="color: red; margin-left: 10px">Deadline</span>
+                    <?php if (!empty($invalid_dataTime)) { ?>
+                        <p style="color: red; margin-top: 10px"><?php echo $invalid_dataTime; ?></p>
+                    <?php } ?>
+
+                    <div class="file-input-container">
+                        <label for="file-input" class="custom-file-upload">
+                            Choose file
+                        </label>
+                        <input id="file-input" type="file" name="task_file" onchange="fileNameUpdate(this)">
+                        <span id="file-name"></span>
+
+                    </div>
+
+                    <input class="text" type="hidden" name="id" value="<?php echo $id_update ?>">
                     <?php
                 }
                 ?>
 
-                <div class="file-input-container">
-                    <label for="file-input" class="custom-file-upload">
-                        Choose file
-                    </label>
-                    <input id="file-input" type="file" name="task_file" onchange="fileName(this)">
-                    <span id="file-name"></span>
-                </div>
-
-                <input type="submit" value="ADD TASK">
+                <input type="submit" name="update" value="UPDATE TASK">
             </form>
         </div>
     </div>
 
     <div class="container">
-        <form action="../view/allTasks.php" method="post">
+        <form action="/allTasks.php" method="post">
             <button type="submit" class="add-task-button">
                 Back
             </button>
@@ -87,7 +98,7 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_dateTime_extension') {
     </ul>
 </div>
 <script>
-    function fileName(input) {
+    function fileNameUpdate(input) {
         let fileName = '';
         if (input.files.length > 0) {
             fileName = input.files[0].name;

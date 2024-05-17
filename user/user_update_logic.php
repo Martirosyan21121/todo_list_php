@@ -17,12 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $userPic = new UserPic();
 
     if (strlen($username) < 5) {
-        header("Location: ../view/updateUser.php?error=min_length");
+        header("Location: ../views/updateUser.php?error=min_length");
         exit;
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        header("Location: ../view/updateUser.php?error=invalid_email");
+        header("Location: ../views/updateUser.php?error=invalid_email");
         exit;
     }
 
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $allowed_extensions = ['jpg', 'jpeg', 'png'];
         $file_extension = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
         if (!in_array($file_extension, $allowed_extensions)) {
-            header("Location: ../view/updateUser.php?error=invalid_file_extension");
+            header("Location: ../views/updateUser.php?error=invalid_file_extension");
             exit;
         }
         if (!file_exists($upload_directory)) {
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $uploaded_image_path = $upload_directory . $image_name;
 
         if (!move_uploaded_file($image_tmp_name, $uploaded_image_path)) {
-            header("Location: ../view/updateUser.php?error=file_upload_failed");
+            header("Location: ../views/updateUser.php?error=file_upload_failed");
             exit;
         }
 
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $userPic->userPicPath($uploaded_image_path);
         $user->userData($userData);
-        header("Location: ../view/singlePage.php");
+        header("Location: ../views/singlePage.php");
     } else {
         echo "Update failed.";
     }

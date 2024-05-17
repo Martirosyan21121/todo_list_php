@@ -21,7 +21,7 @@ class UserPic extends DBConnection
     public function userPicPath($picPath)
     {
         $_SESSION['pic_path'] = $picPath;
-        header('Location: ../view/singlePage.php');
+        header('Location: ../views/singlePage.php');
     }
 
     public function findFileByName($fileName)

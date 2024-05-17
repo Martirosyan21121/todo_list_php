@@ -17,7 +17,7 @@ $username_length = '';
 if (isset($_GET['error']) && $_GET['error'] === 'min_length') {
     $username_length = "Username minimum length must be at least 5 characters.";
 }
-
+die;
 $password_p = '';
 if (isset($_GET['error']) && $_GET['error'] === 'password_pattern') {
     $password_p = "Password need to be least 8 characters must be used letters(uppercase and lowercase), numbers and symbols. ";
@@ -64,7 +64,7 @@ if (isset($_GET['error']) && $_GET['error'] === 'password_pattern') {
                 <input type="submit" value="REGISTER">
             </form>
 
-            <p>You have an Account? <a href="login.php"> Login Now!</a></p>
+            <p>You have an Account? <a href="/"> Login Now!</a></p>
 
         </div>
     </div>

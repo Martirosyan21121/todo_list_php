@@ -10,20 +10,20 @@ class TodoFunctions
         $userId = $_SESSION['user']['id'];
         $show = $todo->getAllByUserId($userId);
         $_SESSION['allTasks'] = $show;
-        header('Location: ../view/allTasks.php');
+        header('Location: ../views/allTasks.php');
         exit();
     }
 
     function updateTask($task)
     {
         $_SESSION['task'] = $task;
-        header('Location: ../view/update_task.php');
+        header('Location: ../views/update_task.php');
         exit();
     }
 
     function handleError($errorType)
     {
-        header("Location: ../view/addTask.php?error=$errorType");
+        header("Location: ../views/addTask.php?error=$errorType");
         exit();
     }
 }

@@ -1,10 +1,4 @@
 <?php
-session_start();
-
-session_unset();
-
-session_destroy();
-
 $wrong_email = '';
 if (isset($_GET['error']) && $_GET['error'] === 'invalid_email') {
     $wrong_email = 'Invalid email.';
@@ -14,6 +8,7 @@ $filed_login = '';
 if (isset($_GET['error']) && $_GET['error'] === 'wrong_login') {
     $filed_login = 'Wrong email or password';
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +25,7 @@ if (isset($_GET['error']) && $_GET['error'] === 'wrong_login') {
             window.scrollTo(0, 1);
         } </script>
 
-    <link href="../css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all"/>
     <link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
 </head>
 <body>
@@ -51,7 +46,7 @@ if (isset($_GET['error']) && $_GET['error'] === 'wrong_login') {
                 <p style="color: red;"><?php echo $filed_login; ?></p>
                 <br>
             <?php } ?>
-            <p>Don't have an Account? <a href="register.php"> Register Now!</a></p>
+            <p>Don't have an Account? <a href="/register"> Register Now!</a></p>
         </div>
     </div>
 

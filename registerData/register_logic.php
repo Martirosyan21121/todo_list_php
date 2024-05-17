@@ -15,20 +15,20 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
     $userPic = new UserPic();
 
     if (strlen($username) < 5) {
-        header("Location: ../view/register.php?error=min_length");
+        header("Location: ../views/register.php?error=min_length");
         exit;
     }
 
     if ($user->emailExists($email)) {
-        header("Location: ../view/register.php?error=email_exist");
+        header("Location: ../views/register.php?error=email_exist");
         exit;
     } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        header("Location: ../view/register.php?error=invalid_email");
+        header("Location: ../views/register.php?error=invalid_email");
         exit;
     }
 
     if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/', $password)) {
-        header("Location: ../view/register.php?error=password_pattern");
+        header("Location: ../views/register.php?error=password_pattern");
         exit;
     }
 

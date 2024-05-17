@@ -83,7 +83,7 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_file_extension') {
                 <input type="submit" value="UPDATE">
             </form>
 
-            <p>Back to your page <a href="../view/singlePage.php"> Go Back !</a></p>
+            <p>Back to your page <a href="/singlePage.php"> Go Back !</a></p>
 
         </div>
     </div>
