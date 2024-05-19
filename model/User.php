@@ -6,6 +6,7 @@ use database\DBConnection;
 use mysqli;
 
 require_once __DIR__ . '/../database/DBConnection.php';
+
 class User extends DBConnection
 {
     protected mysqli $connection;
@@ -14,6 +15,11 @@ class User extends DBConnection
     {
         parent::__construct();
         $this->connection = $this->getConnection();
+    }
+
+    public static function primaryKey(): string
+    {
+        return 'id';
     }
 
     public function register($username, $email, $password)
@@ -49,19 +55,21 @@ class User extends DBConnection
         }
     }
 
-
     public function login($email, $password)
     {
-        $user = $this->findOne($email);
+        $user = self::findOne($email); // Call the static method correctly
         if ($user && password_verify($password, $user['password'])) {
             return true;
         }
         return false;
     }
 
-    public function findOne($email)
+    public static function findOne($email)
     {
-        $stmt = $this->connection->prepare("SELECT * FROM todo.user WHERE email = ?");
+        $dbConnection = new DBConnection();
+        $connection = $dbConnection->getConnection();
+
+        $stmt = $connection->prepare("SELECT * FROM todo.user WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -82,5 +90,14 @@ class User extends DBConnection
         } else {
             header("Location: /singlePage");
         }
+    }
+
+    public static function logout()
+    {
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: /");
+        exit();
     }
 }

@@ -28,7 +28,7 @@ ob_start();
 <div class="main-w3layouts wrapper">
     <h1>Your profile</h1>
     <nav class="top-bar">
-        <a class="add-task-button" href="../loginData/logout.php" style="margin-left: 50px">Logout</a>
+        <a class="add-task-button" href="/logout" style="margin-left: 50px">Logout</a>
         <?php
         echo "<form action='../user/all_tasks.php' method='post'>";
         if (isset($_SESSION['user'])) {

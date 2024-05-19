@@ -20,6 +20,11 @@ class UserController extends Controller
         return $this->render('register');
     }
 
+    public function logout()
+    {
+        User::logout();
+    }
+
     public function singlePage()
     {
         return $this->render('singlePage');
@@ -35,7 +40,7 @@ class UserController extends Controller
             $errors = [];
 
             if (strlen($username) < 5 || strlen($username) > 20) {
-                $errors['username_length'] = "Username must be between 4 and 20 characters.";
+                $errors['username_length'] = "Username must be between 5 and 20 characters.";
             }
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
