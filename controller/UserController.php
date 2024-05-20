@@ -63,15 +63,15 @@ class UserController extends Controller
 
             if ($login) {
                 $userData = $userModel->findUserByEmail($email);
-//                if (!empty($userData['files_id'])) {
-//                    $userFileId = $userData['files_id'];
-//                    $file = $userPic->findFileById($userFileId);
-//                    $image_name = $file['files_name'];
-//
-//                    $upload_directory = '../img/userPic/';
-//                    $uploaded_image_path = $upload_directory . $image_name;
-//                    $userPic->userPicPath($uploaded_image_path);
-//                }
+                if (!empty($userData['files_id'])) {
+                    $userFileId = $userData['files_id'];
+                    $file = $userPic->findFileById($userFileId);
+                    $image_name = $file['files_name'];
+
+                    $upload_directory = '../img/userPic/';
+                    $uploaded_image_path = $upload_directory . $image_name;
+                    $userPic->userPicPath($uploaded_image_path);
+                }
                 $userModel->userData($userData);
             } else {
                 $errors['login_failed'] = "Invalid email or password.";
@@ -200,6 +200,7 @@ class UserController extends Controller
                 $_SESSION['pic_path'] = '/img/userPic/' . $image_name;
 
             } else {
+                $_SESSION['pic_path'] = null;
                 $fileId = null;
             }
 

@@ -77,6 +77,7 @@ use model\User;
             if (!$profilePic == null) {
                 echo "<img class='avatar' alt='Avatar' src='$profilePic' style='margin-left: 80%; margin-top: -20%'>";
             }
+
         } else {
             echo "<img class='avatar' alt='Avatar' src='../img/profilePic.png' style='margin-left: 80%; margin-top: -20%'>";
         }
