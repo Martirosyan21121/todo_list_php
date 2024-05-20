@@ -1,7 +1,6 @@
 <?php
 
 use model\User;
-ob_start();
 
 ?>
 <!DOCTYPE html>
@@ -94,7 +93,7 @@ ob_start();
     <br>
 
     <?php
-    echo "<form action='../user/user_update.php' method='post'>";
+    echo "<form action='/user/update' method='get'>";
     if (isset($_SESSION['user'])) {
         $email = $_SESSION['user']['email'];
         echo "<input type='hidden' name='email' value='$email'>";

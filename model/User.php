@@ -41,8 +41,22 @@ class User extends DBConnection
         return $result->num_rows > 0;
     }
 
-    public function getUserByEmail($email)
+
+    public function login($email, $password)
     {
+        $hashed_password = md5($password);
+        $stmt = $this->connection->prepare("SELECT * FROM todo.user WHERE email = ? AND password = ?");
+        $stmt->bind_param("ss", $email, $hashed_password);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public function findUserByEmail($email){
         $stmt = $this->connection->prepare("SELECT * FROM todo.user WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -55,25 +69,17 @@ class User extends DBConnection
         }
     }
 
-    public function login($email, $password)
+    public static function findOne($condition = [])
     {
-        $user = self::findOne($email); // Call the static method correctly
-        if ($user && password_verify($password, $user['password'])) {
-            return true;
-        }
-        return false;
-    }
+        $primaryKey = static::primaryKey();
+        $connection = (new static())->getConnection();
+        $tableName = 'todo.user';
 
-    public static function findOne($email)
-    {
-        $dbConnection = new DBConnection();
-        $connection = $dbConnection->getConnection();
-
-        $stmt = $connection->prepare("SELECT * FROM todo.user WHERE email = ?");
-        $stmt->bind_param("s", $email);
+        $sql = "SELECT * FROM $tableName WHERE $primaryKey = ?";
+        $stmt = $connection->prepare($sql);
+        $stmt->bind_param('i', $condition);
         $stmt->execute();
         $result = $stmt->get_result();
-
         if ($result->num_rows == 1) {
             return $result->fetch_assoc();
         } else {
@@ -92,12 +98,27 @@ class User extends DBConnection
         }
     }
 
-    public static function logout()
+    public function updateUser($id, $username, $email, $fileId)
     {
-        session_start();
+        $stmt = $this->connection->prepare("UPDATE todo.user SET username = ?, email = ?, files_id = ? WHERE id = ?");
+        $stmt->bind_param("ssii", $username, $email, $fileId, $id);
+        $success = $stmt->execute();
+        $stmt->close();
+        return $success;
+    }
+
+
+    public function logout()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         session_unset();
+
         session_destroy();
-        header("Location: /");
+
+        header('Location: /');
         exit();
     }
 }

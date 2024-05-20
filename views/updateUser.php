@@ -1,20 +1,3 @@
-<?php
-session_start();
-
-$email_exist = '';
-if (isset($_GET['error']) && $_GET['error'] === 'invalid_email') {
-    $email_exist = 'Invalid email.';
-}
-
-$username_length = '';
-if (isset($_GET['error']) && $_GET['error'] === 'min_length') {
-    $username_length = "Username minimum length must be at least 5 characters.";
-}
-$invalid_extension = '';
-if (isset($_GET['error']) && $_GET['error'] === 'invalid_file_extension') {
-    $invalid_extension = "Invalid file extension. Please upload a JPG, JPEG or PNG file.";
-}
-?>
 
 <!DOCTYPE html>
 <html lang="">
@@ -39,10 +22,10 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_file_extension') {
     <div class="main-agileinfo">
         <div class="agileits-top">
 
-            <form action="../user/user_update_logic.php" method="post" enctype="multipart/form-data">
+            <form action="/user/update" method="post" enctype="multipart/form-data">
                 <?php
-                if (isset($_SESSION['user_data'])) {
-                    $user_data = $_SESSION['user_data'];
+                if (isset($_SESSION['user'])) {
+                    $user_data = $_SESSION['user'];
 
                     $user_id = $user_data['id'];
                     $username = $user_data['username'];
@@ -52,15 +35,14 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_file_extension') {
                     <input class="text" type="text" name="username" placeholder="Username"
                            value="<?php echo $username ?>" required="">
 
-                    <?php if (!empty($username_length)) { ?>
-                        <p style="color: red;"><?php echo $username_length; ?></p>
+                    <?php if (!empty($errors['username_length'])) { ?>
+                        <p style="color: red; margin-top: 10px"><?php echo $errors['username_length']; ?></p>
                     <?php } ?>
 
                     <input class="text email" type="email" name="email" placeholder="Email" value="<?php echo $email ?>"
                            required="">
-
-                    <?php if (!empty($email_exist)) { ?>
-                        <p style="color: red;"><?php echo $email_exist; ?></p>
+                    <?php if (!empty($errors['email_format'])) { ?>
+                        <p style="color: red; margin-top: -10px"><?php echo $errors['email_format']; ?></p>
                     <?php } ?>
 
                     <div class="file-input-container">
@@ -71,10 +53,9 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_file_extension') {
                         <span id="file-name"></span>
                     </div>
 
-                    <?php if (!empty($invalid_extension)) { ?>
-                        <p style="color: red;"><?php echo $invalid_extension; ?></p>
+                    <?php if (!empty($errors['invalid_file_extension'])) { ?>
+                        <p style="color: red; margin-top: 10px"><?php echo $errors['invalid_file_extension']; ?></p>
                     <?php } ?>
-
 
                     <input class="text" type="hidden" name="id" value="<?php echo $user_id ?>">
                     <?php
@@ -83,7 +64,7 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_file_extension') {
                 <input type="submit" value="UPDATE">
             </form>
 
-            <p>Back to your page <a href="/singlePage.php"> Go Back !</a></p>
+            <p>Back to your page <a href="/singlePage"> Go Back !</a></p>
 
         </div>
     </div>

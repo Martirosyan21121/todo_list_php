@@ -25,7 +25,9 @@ $app->router->get('/register', [UserController::class, 'register']);
 $app->router->post('/register/user', [UserController::class, 'registerUser']);
 $app->router->get('/singlePage', [UserController::class, 'singlePage']);
 $app->router->get('/adminPage', [UserController::class, 'adminSinglePage']);
+$app->router->post('/login', [UserController::class, 'login']);
+$app->router->get('/user/update', [UserController::class, 'showUpdateForm']);
+$app->router->post('/user/update', [UserController::class, 'updateUser']);
 $app->router->get('/logout', [UserController::class, 'logout']);
 
 $app->run();
-

@@ -1,6 +1,5 @@
-<?php
-session_destroy()
-?>
+
+
 <!DOCTYPE html>
 <html lang="">
 <head>
@@ -11,6 +10,7 @@ session_destroy()
     <script type="application/x-javascript"> addEventListener("load", function () {
             setTimeout(hideURLbar, 0);
         }, false);
+
         function hideURLbar() {
             window.scrollTo(0, 1);
         } </script>
@@ -26,15 +26,20 @@ session_destroy()
         <div class="agileits-top">
             <form action="/login" method="post">
                 <input class="text email" type="email" name="email" placeholder="Email" required="">
-                <?php if (!empty($_GET['errors']['email'])): ?>
-                    <p style="color: red;"><?php echo $_GET['errors']['email']; ?></p>
-                <?php endif; ?>
+                <?php if (!empty($errors['email_format'])) { ?>
+                    <p style="color: red; margin-top: -10px"><?php echo $errors['email_format']; ?></p>
+                <?php } elseif (!empty($errors['email_not_exists'])){ ?>
+                <p style="color: red; margin-top: -10px"><?php echo $errors['email_not_exists']; ?></p>
+                <?php } ?>
+
                 <input class="text" type="password" name="password" placeholder="Password" required="">
+                <?php
+                if (!empty($errors['login_failed'])) { ?>
+                <p style="color: red; margin-top: 10px"><?php echo $errors['login_failed']; ?></p>
+                <?php } ?>
+
                 <input type="submit" value="LOGIN">
             </form>
-            <?php if (!empty($_GET['errors']['password'])): ?>
-                <p style="color: red;"><?php echo $_GET['errors']['password']; ?></p>
-            <?php endif; ?>
 
             <p>Don't have an Account? <a href="/register"> Register Now!</a></p>
         </div>
@@ -57,4 +62,5 @@ session_destroy()
     </ul>
 </div>
 </body>
+
 </html>
