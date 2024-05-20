@@ -2,10 +2,6 @@
 
 use model\User;
 
-require_once "../model/User.php";
-session_start();
-ob_start();
-
 ?>
 <!DOCTYPE html>
 <html lang="">

@@ -69,7 +69,7 @@ class User extends DBConnection
         }
     }
 
-    public static function findOne($condition = [])
+    public static function findOne($condition)
     {
         $primaryKey = static::primaryKey();
         $connection = (new static())->getConnection();

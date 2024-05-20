@@ -29,13 +29,10 @@ use model\User;
     <nav class="top-bar">
         <a class="add-task-button" href="/logout" style="margin-left: 50px">Logout</a>
         <?php
-        echo "<form action='/allTasks' method='post'>";
         if (isset($_SESSION['user'])) {
-            $email = $_SESSION['user']['email'];
-            echo "<input type='hidden' name='email' value='$email'>";
-            echo "<button class='add-task-button' style='margin-left: 50px;' type='submit' name='all_tasks'>All tasks</button>";
+            $userId = $_SESSION['user']['id'];
+            echo "<a class='add-task-button' style='margin-left: 50px;' href='/allTasks/" . (int)$userId . "'>All tasks</a>";
         }
-        echo "</form>";
         ?>
     </nav>
 
@@ -75,14 +72,14 @@ use model\User;
         if (isset($_SESSION['pic_path'])) {
             $profilePic = $_SESSION['pic_path'];
             if (!$profilePic == null) {
-                echo "<img class='avatar' alt='Avatar' src='$profilePic' style='margin-left: 80%; margin-top: -20%'>";
+                echo "<img class='avatar' alt='Avatar' src='$profilePic' style='margin-left: 80%; margin-top: -50px'>";
             }
 
         } else {
-            echo "<img class='avatar' alt='Avatar' src='../img/profilePic.png' style='margin-left: 80%; margin-top: -20%'>";
+            echo "<img class='avatar' alt='Avatar' src='../img/profilePic.png' style='margin-left: 80%; margin-top: -50px'>";
         }
 
-        echo "<h3 style='margin-left: 75%; margin-top: -100px'> Username:____$username</h3>";
+        echo "<h3 style='margin-left: 75%; margin-top: 10px'> Username:____$username</h3>";
         echo "<br>";
         echo "<h3 style='margin-left: 75%; margin-top: -10px'> Email:____$email</h3>";
 
@@ -94,13 +91,10 @@ use model\User;
     <br>
 
     <?php
-    echo "<form action='/user/update' method='get'>";
     if (isset($_SESSION['user'])) {
-        $email = $_SESSION['user']['email'];
-        echo "<input type='hidden' name='email' value='$email'>";
-        echo "<button class='add-task-button' style='margin-left: 75%;' type='submit' name='update_user'>Update your data</button>";
+        $userId = $_SESSION['user']['id'];
+        echo "<a class='add-task-button' style='margin-left: 75%;' href='/user/update/$userId'>Update your data</a>";
     }
-    echo "</form>";
     ?>
 
     <div class="colorlibcopy-agile">

@@ -7,8 +7,13 @@ use model\Todo;
 require_once 'model\Todo.php';
 class TaskController extends Controller
 {
-    public function allUserTasks()
+    public function allUserTasks($id)
     {
-        return $this->render('allTasks');
+
+        $taskModel = new Todo();
+
+        $tasks = $taskModel->getAllByUserId($id);
+
+        return $this->render('allTasks', ['tasks' => $tasks]);
     }
 }

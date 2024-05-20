@@ -128,16 +128,11 @@ class UserController extends Controller
         }
     }
 
-    public function showUpdateForm()
+    public function showUpdateForm($id)
     {
-        if (!isset($_SESSION['user'])) {
-            header('Location: /login');
-            exit();
-        }
-
         $userModel = new User();
 
-        $user = $userModel->findOne($_SESSION['user']['id']);
+        $user = $userModel->findOne(['id' => $id]);
 
         return $this->render('updateUser', ['user' => $user]);
     }

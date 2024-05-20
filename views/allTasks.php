@@ -2,10 +2,8 @@
 
 use model\TaskFile;
 
-session_start();
 ob_start();
 
-require_once '../model/TaskFile.php';
 ?>
 <!DOCTYPE html>
 <html lang="">
@@ -30,11 +28,11 @@ require_once '../model/TaskFile.php';
 <body>
 <div class="main-w3layouts wrapper">
     <h1>All tasks</h1>
-    <a href="/singlePage.php" class="add-task-button" style="margin-left: 20px">Back to your profile page</a>
+    <a href="/singlePage" class="add-task-button" style="margin-left: 20px">Back to your profile page</a>
 
     <div class="cart">
         <?php
-        if (!empty($_SESSION['allTasks'])) {
+        if (!empty($_SESSION['tasks'])) {
             $taskFile = new TaskFile();
             foreach ($_SESSION['allTasks'] as $row) {
                 $text = $row['text'];
