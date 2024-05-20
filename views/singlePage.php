@@ -29,7 +29,7 @@ use model\User;
     <nav class="top-bar">
         <a class="add-task-button" href="/logout" style="margin-left: 50px">Logout</a>
         <?php
-        echo "<form action='../user/all_tasks.php' method='post'>";
+        echo "<form action='/allTasks' method='post'>";
         if (isset($_SESSION['user'])) {
             $email = $_SESSION['user']['email'];
             echo "<input type='hidden' name='email' value='$email'>";

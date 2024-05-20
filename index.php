@@ -1,5 +1,6 @@
 <?php
 
+use controller\TaskController;
 use model\User;
 use controller\UserController;
 use thecodeholic\phpmvc\Application;
@@ -8,6 +9,7 @@ use thecodeholic\phpmvc\Application;
 require_once 'vendor/autoload.php';
 require_once 'model/User.php';
 require_once 'controller/UserController.php';
+require_once 'controller/TaskController.php';
 
 $config = [
     'userClass' => User::class,
@@ -27,7 +29,7 @@ $app->router->get('/singlePage', [UserController::class, 'singlePage']);
 $app->router->get('/adminPage', [UserController::class, 'adminSinglePage']);
 $app->router->post('/login', [UserController::class, 'login']);
 $app->router->get('/user/update', [UserController::class, 'showUpdateForm']);
-$app->router->get('/allTasks', [UserController::class, 'allUserTasks']);
+$app->router->get('/allTasks', [TaskController::class, 'allUserTasks']);
 $app->router->post('/user/update', [UserController::class, 'updateUser']);
 $app->router->get('/logout', [UserController::class, 'logout']);
 
