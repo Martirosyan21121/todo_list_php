@@ -77,12 +77,12 @@ ob_start();
                     <div>
                         <div class='item-title' style='max-width: 500px; margin: 10px'><?php echo $text; ?></div>
                         <br>
-                        <form action='/allTasks/deleteTask' method='post'>
+                        <a href="/allTasks/deleteTask/<?= $itemId ?>" style='margin: 20px' class='delete-task-button'>
+                            Delete
+                        </a>
+                        <form action='/allTasks/deleteTask/<?= $itemId ?>' method='post'>
                             <input type='hidden' name='itemId' value='<?php echo $itemId; ?>'>
                             <input type='hidden' name='fileId' value='<?php echo $file_id; ?>'>
-                            <button type='submit' name='delete' style='margin: 20px' class='delete-task-button'>
-                                Delete
-                            </button>
                             <button type='submit' name='update' style='margin-left: 40px; margin-top: 110px;'
                                     class='add-task-button'>Update
                             </button>

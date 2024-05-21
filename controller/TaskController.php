@@ -27,7 +27,10 @@ class TaskController extends Controller
         $userId = (int)$request->getRouteParams()['id'];
         return $this->render('addTask', ['id' => $userId]);
     }
-
+    public function addTaskPage()
+    {
+        return $this->render('addTask');
+    }
     public function saveTask(Request $request)
     {
         $userId = (int)$request->getRouteParams()['id'] ?? null;
@@ -105,6 +108,8 @@ class TaskController extends Controller
 //                $_SESSION['status3'] = $statusCount;
 
                 header('Location: /allTasks/' . $userId);
+            }else {
+                header('Location: /allTasks/addTask?error=registration_failed');
             }
         }
         $tasks = $taskModel->getAllByUserId($userId);
