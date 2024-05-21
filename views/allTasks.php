@@ -74,18 +74,18 @@ ob_start();
                          style='margin-left: 550px; width: 150px; margin-top: 110px; color: red; position: absolute'>
                         Until
                         - <?php echo $dataTime; ?></div>
-                    <div>
+
                         <div class='item-title' style='max-width: 500px; margin: 10px'><?php echo $text; ?></div>
                         <br>
-                        <a href="/allTasks/deleteTask/<?= $itemId ?>" style='margin-left: 20px; margin-bottom: 10px' class='delete-task-button'>
-                            Delete
-                        </a>
-                        <form action='/allTasks/deleteTask/<?= $itemId ?>' method='post'>
-                            <input type='hidden' name='itemId' value='<?php echo $itemId; ?>'>
-                            <input type='hidden' name='fileId' value='<?php echo $file_id; ?>'>
-                            <button type='submit' name='update' style='margin-left: 40px; margin-top: 110px;'
-                                    class='add-task-button'>Update
-                            </button>
+                        <div style="margin-top: 120px">
+                            <a  style='margin-left: 20px;' href="/deleteTask/<?= $itemId ?>" class='delete-task-button'>
+                                Delete
+                            </a>
+
+                            <a  style='margin-left: 40px;'  href="/update/<?= $itemId ?>" class='add-task-button'>
+                                Update
+                            </a>
+
                             <?php
                             if ($file !== null) {
                                 $fileName = $file['files_name'];
@@ -102,21 +102,24 @@ ob_start();
                                 echo "<a class='download-file-button' onclick='fileNotFound()' style='margin-left: 70px'>Keep file </a>";
                             }
                             ?>
+                            <form action='/allTasks/deleteTask/<?= $itemId ?>' method='post'>
+                                <input type='hidden' name='itemId' value='<?php echo $itemId; ?>'>
+                                <input type='hidden' name='fileId' value='<?php echo $file_id; ?>'>
+                                <select id='statusSelect' class='custom-select' name='status'
+                                        style='margin-left: 485px; margin-bottom: 15px; color: #007bff'>
+                                    <option value='0' <?php echo ($selected == '0') ? 'selected' : ''; ?>>Not Started
+                                    </option>
+                                    <option value='1' <?php echo ($selected == '1') ? 'selected' : ''; ?>>In Process
+                                    </option>
+                                    <option value='2' <?php echo ($selected == '2') ? 'selected' : ''; ?>>In Test
+                                    </option>
+                                    <option value='3' <?php echo ($selected == '3') ? 'selected' : ''; ?>>Done
+                                    </option>
+                                </select>
+                            </form>
+                        </div>
 
 
-                            <select id='statusSelect' class='custom-select' name='status'
-                                    style='margin-right: 0; margin-left: 45px;  color: #007bff'>
-                                <option value='0' <?php echo ($selected == '0') ? 'selected' : ''; ?>>Not Started
-                                </option>
-                                <option value='1' <?php echo ($selected == '1') ? 'selected' : ''; ?>>In Process
-                                </option>
-                                <option value='2' <?php echo ($selected == '2') ? 'selected' : ''; ?>>In Test
-                                </option>
-                                <option value='3' <?php echo ($selected == '3') ? 'selected' : ''; ?>>Done
-                                </option>
-                            </select>
-                        </form>
-                    </div>
 
                     <div id='<?php echo $modalId; ?>' class='modal'>
                         <div class='modal-content'>
