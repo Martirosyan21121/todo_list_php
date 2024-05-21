@@ -1,9 +1,3 @@
-<?php
-$invalid_dataTime = '';
-if (isset($_GET['error']) && $_GET['error'] === 'invalid_dateTime_extension') {
-    $invalid_dataTime = "Please input active date and time (more than 10 minute of current time)";
-}
-?>
 
 <!DOCTYPE html>
 <html lang="">
@@ -28,26 +22,15 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_dateTime_extension') {
 
     <div class="main-agileinfo">
         <div class="agileits-top">
-
-            <form action="../todo/add_task.php" method="post" enctype="multipart/form-data">
+            <form action="/allTasks/addTask/saveTask/<?= $id?>" method="post" enctype="multipart/form-data">
                 <input class="text" type="text" name="text" placeholder="Text" required="">
                 <br>
                 <input type="datetime-local" name="dateTime" placeholder="Data time" step="60" required="">
 
                 <span style="color: red; margin-left: 10px">Deadline</span>
-                <?php if (!empty($invalid_dataTime)) { ?>
-                    <p style="color: red; margin-top: 10px"><?php echo $invalid_dataTime; ?></p>
+                <?php if (!empty($errors['invalid_date_time'])) { ?>
+                    <p style="color: red; margin-top: 10px"><?php echo $errors['invalid_date_time']; ?></p>
                 <?php } ?>
-
-                <?php
-                session_start();
-                if (isset($_SESSION['id'])) {
-                    $id = $_SESSION['id'];
-                    ?>
-                    <input class="text" type="hidden" name="id" value="<?php echo $id ?>">
-                    <?php
-                }
-                ?>
 
                 <div class="file-input-container">
                     <label for="file-input" class="custom-file-upload">
@@ -63,11 +46,10 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_dateTime_extension') {
     </div>
 
     <div class="container">
-        <form action="/allTasks.php" method="post">
-            <button type="submit" class="add-task-button">
-                Back
-            </button>
-        </form>
+
+        <a href="/allTasks/<?= $id?>" class="add-task-button">
+            Back
+        </a>
     </div>
 
     <div class="colorlibcopy-agile">

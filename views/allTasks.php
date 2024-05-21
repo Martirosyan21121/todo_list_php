@@ -32,9 +32,9 @@ ob_start();
 
     <div class="cart">
         <?php
-        if (!empty($_SESSION['tasks'])) {
+        if (!empty($tasks)) {
             $taskFile = new TaskFile();
-            foreach ($_SESSION['allTasks'] as $row) {
+            foreach ($tasks as $row) {
                 $text = $row['text'];
                 $dataTime = $row['date_time'];
                 $itemId = $row['id'];
@@ -90,7 +90,7 @@ ob_start();
                             if ($file !== null) {
                                 $fileName = $file['files_name'];
                                 if ($fileName !== null) {
-                                    $downloadPath = '../img/taskFiles/' . $fileName;
+                                    $downloadPath = __DIR__ . '/../img/taskFiles/' . $fileName;
                                     ?>
                                     <a href="<?php echo $downloadPath ?>" download style='margin-left: 70px;'
                                        class='download-file-button'>Keep file
@@ -152,13 +152,12 @@ ob_start();
     <br>
 
     <div class="container">
-        <form action="../todo/userPage.php" method="post">
-            <input type="hidden" name="userId"
-                   value="<?= $_SESSION['user']['id'] ?>">
-            <button type="submit" class="add-task-button">
-                Add task
-            </button>
-        </form>
+        <?php
+        if (isset($_SESSION['user'])) {
+            $userId = $_SESSION['user']['id'];
+            echo "<a class='add-task-button' style='margin-left: 50px;' href='/allTasks/addTask/$userId'>Add tasks</a>";
+        }
+        ?>
     </div>
 
     <div class="colorlibcopy-agile">
@@ -188,4 +187,3 @@ ob_start();
 </script>
 </body>
 </html>
-

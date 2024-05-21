@@ -5,7 +5,6 @@ use model\User;
 use controller\UserController;
 use thecodeholic\phpmvc\Application;
 
-
 require_once 'vendor/autoload.php';
 require_once 'model/User.php';
 require_once 'controller/UserController.php';
@@ -29,8 +28,12 @@ $app->router->get('/singlePage', [UserController::class, 'singlePage']);
 $app->router->get('/adminPage', [UserController::class, 'adminSinglePage']);
 $app->router->post('/login', [UserController::class, 'login']);
 $app->router->get('/user/update/{id}', [UserController::class, 'showUpdateForm']);
+$app->router->post('/user/update/', [UserController::class, 'updateUser']);
+
 $app->router->get('/allTasks/{id}', [TaskController::class, 'allUserTasks']);
-$app->router->post('/user/update', [UserController::class, 'updateUser']);
+$app->router->get('/allTasks/addTask/{id}', [TaskController::class, 'addTask']);
+$app->router->post('/allTasks/addTask/saveTask/{id}', [TaskController::class, 'saveTask']);
+
 $app->router->get('/logout', [UserController::class, 'logout']);
 
 $app->run();

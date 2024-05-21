@@ -26,12 +26,13 @@ use model\User;
 <body>
 <div class="main-w3layouts wrapper">
     <h1>Your profile</h1>
+
     <nav class="top-bar">
         <a class="add-task-button" href="/logout" style="margin-left: 50px">Logout</a>
         <?php
         if (isset($_SESSION['user'])) {
             $userId = $_SESSION['user']['id'];
-            echo "<a class='add-task-button' style='margin-left: 50px;' href='/allTasks/" . (int)$userId . "'>All tasks</a>";
+            echo "<a class='add-task-button' style='margin-left: 50px;' href='/allTasks/$userId'>All tasks</a>";
         }
         ?>
     </nav>
@@ -74,11 +75,9 @@ use model\User;
             if (!$profilePic == null) {
                 echo "<img class='avatar' alt='Avatar' src='$profilePic' style='margin-left: 80%; margin-top: -50px'>";
             }
-
         } else {
             echo "<img class='avatar' alt='Avatar' src='../img/profilePic.png' style='margin-left: 80%; margin-top: -50px'>";
         }
-
         echo "<h3 style='margin-left: 75%; margin-top: 10px'> Username:____$username</h3>";
         echo "<br>";
         echo "<h3 style='margin-left: 75%; margin-top: -10px'> Email:____$email</h3>";
