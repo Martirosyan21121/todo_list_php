@@ -77,7 +77,7 @@ ob_start();
                     <div>
                         <div class='item-title' style='max-width: 500px; margin: 10px'><?php echo $text; ?></div>
                         <br>
-                        <a href="/allTasks/deleteTask/<?= $itemId ?>" style='margin: 20px' class='delete-task-button'>
+                        <a href="/allTasks/deleteTask/<?= $itemId ?>" style='margin-left: 20px; margin-bottom: 10px' class='delete-task-button'>
                             Delete
                         </a>
                         <form action='/allTasks/deleteTask/<?= $itemId ?>' method='post'>

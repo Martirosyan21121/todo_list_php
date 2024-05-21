@@ -7,6 +7,7 @@ use model\TaskFile;
 use model\Todo;
 use model\User;
 use model\UserPic;
+use thecodeholic\phpmvc\Controller;
 
 require_once "../model/Admin.php";
 require_once "../model/User.php";
@@ -14,7 +15,7 @@ require_once "../model/Todo.php";
 require_once "../model/UserPic.php";
 require_once "../model/TaskFile.php";
 
-class AdminController
+class AdminController extends Controller
 {
 //    public function allUsersData(): array
 //    {
