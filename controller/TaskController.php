@@ -30,12 +30,13 @@ class TaskController extends Controller
 
     public function saveTask(Request $request)
     {
+        $userId = (int)$request->getRouteParams()['id'] ?? null;
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $taskModel = new Todo();
             $taskFile = new TaskFile();
             $text = $_POST['text'];
             $dateTime = $_POST['dateTime'];
-            $userId = (int)$request->getRouteParams()['id'];
 
             $errors = [];
 
@@ -47,7 +48,8 @@ class TaskController extends Controller
                 $inputDateTime = new DateTime($dateTime);
             } catch (Exception $e) {
                 $errors['invalid_date_time'] = "Invalid date and time format.";
-                return $this->render('addTask', ['errors' => $errors]);            }
+                return $this->render('addTask', ['errors' => $errors]);
+            }
 
             if ($inputDateTime < $currentDateTime) {
                 $errors['invalid_date_time'] = "Please input a future date and time (at least 10 minutes from the current time).";
@@ -56,7 +58,6 @@ class TaskController extends Controller
             if (!empty($errors)) {
                 return $this->render('addTask', ['errors' => $errors]);
             }
-
 
             $saveResult = $taskModel->save($text, $dateTime, $userId);
             if ($saveResult) {
@@ -67,7 +68,7 @@ class TaskController extends Controller
                     $randomNumber = rand(10000, 1000000);
                     $file_tmp_name = $_FILES['task_file']['tmp_name'];
                     $file_name = $taskId . $randomNumber . $taskUserId . $_FILES['task_file']['name'];
-                    $upload_directory = __DIR__ .  '/../img/taskFiles/';
+                    $upload_directory = __DIR__ . '/../img/taskFiles/';
                     if (!file_exists($upload_directory)) {
                         mkdir($upload_directory, 0777, true);
                     }
@@ -103,9 +104,15 @@ class TaskController extends Controller
 //                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
 //                $_SESSION['status3'] = $statusCount;
 
+                header('Location: /allTasks/' . $userId);
             }
         }
         $tasks = $taskModel->getAllByUserId($userId);
         return $this->render('allTasks', ['tasks' => $tasks]);
+    }
+
+    public function deleteTask()
+    {
+
     }
 }

@@ -30,8 +30,10 @@ $app->router->post('/login', [UserController::class, 'login']);
 $app->router->get('/user/update/{id}', [UserController::class, 'showUpdateForm']);
 $app->router->post('/user/update/', [UserController::class, 'updateUser']);
 
+
 $app->router->get('/allTasks/{id}', [TaskController::class, 'allUserTasks']);
 $app->router->get('/allTasks/addTask/{id}', [TaskController::class, 'addTask']);
+$app->router->get('/allTasks/deleteTask', [TaskController::class, 'addTask']);
 $app->router->post('/allTasks/addTask/saveTask/{id}', [TaskController::class, 'saveTask']);
 
 $app->router->get('/logout', [UserController::class, 'logout']);

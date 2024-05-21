@@ -77,7 +77,7 @@ ob_start();
                     <div>
                         <div class='item-title' style='max-width: 500px; margin: 10px'><?php echo $text; ?></div>
                         <br>
-                        <form action='../todo/add_task.php' method='post'>
+                        <form action='/allTasks/deleteTask' method='post'>
                             <input type='hidden' name='itemId' value='<?php echo $itemId; ?>'>
                             <input type='hidden' name='fileId' value='<?php echo $file_id; ?>'>
                             <button type='submit' name='delete' style='margin: 20px' class='delete-task-button'>
@@ -90,7 +90,7 @@ ob_start();
                             if ($file !== null) {
                                 $fileName = $file['files_name'];
                                 if ($fileName !== null) {
-                                    $downloadPath = __DIR__ . '/../img/taskFiles/' . $fileName;
+                                    $downloadPath =  '/../img/taskFiles/' . $fileName;
                                     ?>
                                     <a href="<?php echo $downloadPath ?>" download style='margin-left: 70px;'
                                        class='download-file-button'>Keep file
