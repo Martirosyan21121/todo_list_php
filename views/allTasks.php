@@ -177,7 +177,7 @@ ob_start();
 </div>
 
 <script src="../js/script.js"></script>
-<!--<script src="../js/taskHistory.js"></script>-->
+<script src="../js/taskHistory.js"></script>
 
 <script>
     function fileNotFound() {
