@@ -8,61 +8,129 @@ use model\Todo;
 use model\User;
 use model\UserPic;
 use thecodeholic\phpmvc\Controller;
+use thecodeholic\phpmvc\Request;
 
-require_once "../model/Admin.php";
-require_once "../model/User.php";
-require_once "../model/Todo.php";
-require_once "../model/UserPic.php";
-require_once "../model/TaskFile.php";
+require_once "model/Admin.php";
+require_once "model/User.php";
+require_once "model/Todo.php";
+require_once "model/UserPic.php";
+require_once "model/TaskFile.php";
 
 class AdminController extends Controller
 {
-//    public function allUsersData(): array
-//    {
-//        $admin = new Admin();
-//        return $admin->getAllUserData();
-//    }
-//
-//    public static function deleteUserById($userId): bool
-//    {
-//        $admin = new Admin();
-//        return $admin->deleteUserById($userId);
-//    }
-//}
-//
-//if (isset($_GET['delId'])) {
-//    $user = new User();
-//    $todo = new Todo();
-//    $userPic = new UserPic();
-//    $taskFile = new TaskFile();
-//    $userData = $user->getUserDataById($_GET['delId']);
-//    $userPicId = $userData['files_id'];
-//
-//    if ($userPicId !== null) {
-//        $fileToUpdate = $userPic->findFileById($userData['files_id']);
-//        $fileToUpdateName = $fileToUpdate['files_name'];
-//        $filePathToUpdate = '../img/userPic/' . $fileToUpdateName;
-//        if (file_exists($filePathToUpdate)) {
-//            unlink($filePathToUpdate);
-//        }
-//        $userPic->deleteFileById($userData['files_id']);
-//    }
-//    $allTasks = $todo->getAllByUserId($_GET['delId']);
-//    foreach ($allTasks as $task) {
-//        if ($task['task_files_id'] !== null) {
-//            $fileToDelete = $taskFile->findFileById($task['task_files_id']);
-//            $fileToDeleteName = $fileToDelete['files_name'];
-//            $filePathToDelete = '../img/taskFiles/' . $fileToDeleteName;
-//            if (file_exists($filePathToDelete)) {
-//                unlink($filePathToDelete);
-//            }
-//            $taskFile->deleteFileById($task['task_files_id']);
-//        }
-//    }
-//
-//    $adminController = new AdminController();
-//    $adminController->deleteUserById($_GET['delId']);
-//
-//    header("Location: ../views/allUsers.php");
-//    exit();
+
+    public function adminSinglePage(Request $request)
+    {
+        $adminId = (int)$request->getRouteParams()['id'] ?? null;
+        $adminModel = new Admin();
+        $admin = $adminModel->findAdminById($adminId);
+        return $this->render('adminSinglePage', ['admin' => $admin]);
+    }
+   public function showAdminUpdateForm(Request $request)
+   {
+       $adminId = (int)$request->getRouteParams()['id'] ?? null;
+       $adminModel = new Admin();
+       $admin = $adminModel->findAdminById($adminId);
+       return $this->render('updateAdmin', ['admin' => $admin]);
+   }
+
+   public function updateAdmin(Request $request)
+   {
+       $adminId = (int)$request->getRouteParams()['id'] ?? null;
+       if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+           $adminModel = new Admin();
+           $adminPic = new UserPic();
+           $username = $_POST['username'] ?? '';
+           $email = $_POST['email'] ?? '';
+
+           $errors = [];
+           $admin = $adminModel->findAdminById($adminId);
+           if (strlen($username) < 5 || strlen($username) > 20) {
+               $errors['username_length'] = "Username must be between 5 and 20 characters.";
+           }
+
+           if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+               $errors['email_format'] = "Invalid email format.";
+           }
+
+           if (!empty($errors)) {
+               return $this->render('updateAdmin', ['errors' => $errors, 'admin' => $admin]);
+           }
+
+           if (isset($_FILES['admin_image']) && $_FILES['admin_image']['error'] === UPLOAD_ERR_OK) {
+               $image_tmp_name = $_FILES['admin_image']['tmp_name'];
+               $randomNumber = rand(1000, 1000000);
+               $image_name = $adminId . $randomNumber. $_FILES['admin_image']['name'];
+
+               $upload_directory = __DIR__ . '/../img/userPic/';
+               $allowed_extensions = ['jpg', 'jpeg', 'png'];
+
+               $file_extension = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
+               if (!in_array($file_extension, $allowed_extensions)) {
+                   $errors['invalid_file_extension'] = "Invalid file extension. 
+                                    Please upload a JPG, JPEG or PNG file.";
+                   return $this->render('updateAdmin', ['errors' => $errors, 'admin' => $admin]);
+               }
+
+               if (!file_exists($upload_directory)) {
+                   mkdir($upload_directory, 0777, true);
+               }
+
+               $uploaded_image_path = $upload_directory . $image_name;
+
+               if (!move_uploaded_file($image_tmp_name, $uploaded_image_path)) {
+                   header("Location: ../view/updateUser.php?error=file_upload_failed");
+                   exit;
+               }
+
+               $adminPic->savePic($image_name);
+               $file = $adminPic->findFileByName($image_name);
+               $fileId = $file['id'];
+               $_SESSION['pic_path'] = '/img/userPic/' . $image_name;
+           } else {
+
+               $fileId = null;
+           }
+       }
+
+       $adminData = $adminModel->findAdminById($adminId);
+       $fileToUpdateId = $adminData['task_files_id'];
+
+       $fileToUpdate = $adminPic->findFileById($fileToUpdateId);
+       $fileToUpdateName = $fileToUpdate['files_name'];
+
+       if ($fileId === null) {
+           $fileToUpdateId = $adminData['task_files_id'];
+           if ($fileToUpdateId !== null && $fileToUpdateId !== $fileId) {
+               if ($fileToUpdate !== null) {
+                   $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
+                   if (file_exists($filePathToUpdate)) {
+                       unlink($filePathToUpdate);
+                   }
+               }
+           }
+           if ($fileToUpdateId !== null) {
+               $adminPic->deleteFileById($fileToUpdateId);
+           }
+       }
+
+       if (!empty($fileId)) {
+           if ($fileToUpdateId !== null) {
+               $adminPic->deleteFileById($fileToUpdateId);
+               $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
+               if (file_exists($filePathToUpdate)) {
+                   unlink($filePathToUpdate);
+               }
+           }
+       }
+
+
+       $updateResult = $adminModel->updateAdmin($adminId, $username, $email, $fileId);
+       if ($updateResult) {
+           header('Location: /adminPage/' . $adminId);
+       } else {
+           header('Location: /admin/update/' . $adminId);
+       }
+       return $this->render('adminSinglePage', ['admin' => $admin]);
+   }
 }

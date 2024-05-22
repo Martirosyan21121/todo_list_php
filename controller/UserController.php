@@ -32,10 +32,6 @@ class UserController extends Controller
         return $this->render('singlePage');
     }
 
-    public function adminSinglePage()
-    {
-        return $this->render('adminSinglePage');
-    }
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

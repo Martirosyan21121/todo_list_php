@@ -1,5 +1,6 @@
 <?php
 
+use controller\AdminController;
 use controller\TaskController;
 use model\User;
 use controller\UserController;
@@ -9,6 +10,7 @@ require_once 'vendor/autoload.php';
 require_once 'model/User.php';
 require_once 'controller/UserController.php';
 require_once 'controller/TaskController.php';
+require_once 'controller/AdminController.php';
 
 $config = [
     'userClass' => User::class,
@@ -25,18 +27,22 @@ $app->router->get('/', [UserController::class, 'home']);
 $app->router->get('/register', [UserController::class, 'register']);
 $app->router->post('/register/user', [UserController::class, 'registerUser']);
 $app->router->get('/singlePage', [UserController::class, 'singlePage']);
-$app->router->get('/adminPage', [UserController::class, 'adminSinglePage']);
 $app->router->post('/login', [UserController::class, 'login']);
 $app->router->get('/user/update/{id}', [UserController::class, 'showUpdateForm']);
-$app->router->post('/user/update/', [UserController::class, 'updateUser']);
+$app->router->post('/user/update/', [UserController::class, 'updateUser']); // send id
 
 $app->router->get('/allTasks/{id}', [TaskController::class, 'allUserTasks']);
 $app->router->get('/allTasks/addTask/{id}', [TaskController::class, 'addTask']);
 $app->router->get('/allTasks/deleteTask/{id}', [TaskController::class, 'deleteTask']);
 $app->router->get('/allTasks/update/{id}', [TaskController::class, 'showTaskUpdateForm']);
-$app->router->post('/allTasks/status/{id}', [TaskController::class, 'taskStatus']);
+$app->router->get('/allTasks/status/{id}', [TaskController::class, 'taskStatus']);
 $app->router->post('/allTasks/update/updateTask/{id}', [TaskController::class, 'updateTask']);
 $app->router->post('/allTasks/addTask/saveTask/{id}', [TaskController::class, 'saveTask']);
+
+$app->router->get('/adminPage/{id}', [AdminController::class, 'adminSinglePage']);
+$app->router->get('/admin/update/{id}', [AdminController::class, 'showAdminUpdateForm']);
+$app->router->post('/admin/updateData/{id}', [AdminController::class, 'updateAdmin']);
+$app->router->post('', [AdminController::class, '']);
 
 $app->router->get('/logout', [UserController::class, 'logout']);
 

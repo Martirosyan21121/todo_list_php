@@ -66,7 +66,7 @@ class Todo extends DBConnection
         return $success;
     }
 
-    public function markCompletedById($todoId, $selectedValue)
+    public function updateStatus($todoId, $selectedValue)
     {
         if ($selectedValue < 0 || $selectedValue > 3) {
             return false;
@@ -96,7 +96,7 @@ class Todo extends DBConnection
 
         $task = $result->fetch_assoc();
         $stmt->close();
-        return $task ? $task : null;
+        return $task ? : null;
     }
 
     public function updateText($todoId, $newText, $newDateTime, $fileId)

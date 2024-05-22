@@ -172,7 +172,17 @@ class TaskController extends Controller
     public function taskStatus(Request $request)
     {
         $taskId = (int)$request->getRouteParams()['id'] ?? null;
+        $status = (int)$_GET['status'] ?? null;
+        $taskModel = new Todo();
+
+        if ($taskId !== null && $status !== null) {
+            $taskModel->updateStatus($taskId, $status);
+        }
         var_dump($taskId);
+
+        $task = $taskModel->findTaskById($taskId);
+        $userId = $task['user_id'];
+        header('Location: /allTasks/' . $userId);
     }
 
     public function updateTask(Request $request)
@@ -264,7 +274,6 @@ class TaskController extends Controller
             }
 
 
-        $taskData = $taskModel->findTaskById($taskId);
         $updateResult = $taskModel->updateText($taskId, $text, $dateTime, $fileId);
         if ($updateResult) {
             $userId = $taskData['user_id'];

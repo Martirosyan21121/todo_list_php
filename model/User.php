@@ -92,7 +92,7 @@ class User extends DBConnection
         $_SESSION['user'] = $user;
 
         if ($user['user_type'] === 'ADMIN') {
-            header("Location: /adminPage");
+            header("Location: /adminPage/" . $user['id']);
         } else {
             header("Location: /singlePage");
         }

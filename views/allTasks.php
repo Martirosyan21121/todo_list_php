@@ -102,7 +102,7 @@ ob_start();
                                 echo "<a class='download-file-button' onclick='fileNotFound()' style='margin-left: 70px'>Keep file </a>";
                             }
                             ?>
-                            <form action='/allTasks/status/<?= $itemId ?>' method='post'>
+                            <form action='/allTasks/status/<?= $itemId ?>' method='get'>
                                 <select id='statusSelect' class='custom-select' name='status'
                                         style='margin-left: 485px; margin-bottom: 15px; color: #007bff'>
                                     <option value='0' <?php echo ($selected == '0') ? 'selected' : ''; ?>>Not Started
@@ -177,7 +177,7 @@ ob_start();
 </div>
 
 <script src="../js/script.js"></script>
-<script src="../js/taskHistory.js"></script>
+<!--<script src="../js/taskHistory.js"></script>-->
 
 <script>
     function fileNotFound() {

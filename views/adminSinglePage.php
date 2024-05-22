@@ -1,8 +1,4 @@
-<?php
 
-use model\User;
-
-?>
 <!DOCTYPE html>
 <html lang="">
 <head>
@@ -35,20 +31,19 @@ use model\User;
     </nav>
 
     <?php
-    if (isset($_SESSION['user'])) {
-        $user = new User();
-        $username = $_SESSION['user']['username'];
-        $email = $_SESSION['user']['email'];
-        $userId = $_SESSION['user']['id'];
+    if (isset($admin)) {
+        $username = $admin['username'];
+        $email = $admin['email'];
+        $userId = $admin['id'];
 
-        if (isset($_SESSION['pic_path'])) {
+
             $profilePic = $_SESSION['pic_path'];
             if (!$profilePic == null) {
                 echo "<img class='avatar' alt='Avatar' src='$profilePic' style='margin-left: 80%; margin-top: -50px'>";
-            }
-        } else {
+            }else {
             echo "<img class='avatar' alt='Avatar' src='../img/profilePic.png' style='margin-left: 80%; margin-top: -50px'>";
         }
+
 
         echo "<h3 style='margin-left: 75%; margin-top: 10px'> Username:____$username</h3>";
         echo "<br>";
@@ -61,13 +56,10 @@ use model\User;
     <br>
 
     <?php
-    echo "<form action='../admin/admin_update.php' method='post'>";
     if (isset($_SESSION['user'])) {
-        $email = $_SESSION['user']['email'];
-        echo "<input type='hidden' name='email' value='$email'>";
-        echo "<button class='add-task-button' style='margin-left: 75%;' type='submit' name='update_admin'>Update your data</button>";
+        $userId = $_SESSION['user']['id'];
+        echo "<a class='add-task-button' style='margin-left: 75%;' href='/admin/update/$userId'>Update your data</a>";
     }
-    echo "</form>";
     ?>
 
     <div class="colorlibcopy-agile">
