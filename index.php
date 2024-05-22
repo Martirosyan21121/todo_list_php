@@ -34,6 +34,7 @@ $app->router->get('/allTasks/{id}', [TaskController::class, 'allUserTasks']);
 $app->router->get('/allTasks/addTask/{id}', [TaskController::class, 'addTask']);
 $app->router->get('/allTasks/deleteTask/{id}', [TaskController::class, 'deleteTask']);
 $app->router->get('/allTasks/update/{id}', [TaskController::class, 'showTaskUpdateForm']);
+$app->router->post('/allTasks/update/updateTask/{id}', [TaskController::class, 'updateTask']);
 $app->router->post('/allTasks/addTask/saveTask/{id}', [TaskController::class, 'saveTask']);
 
 $app->router->get('/logout', [UserController::class, 'logout']);

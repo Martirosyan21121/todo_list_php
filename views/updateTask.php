@@ -4,11 +4,6 @@ use model\TaskFile;
 
 require_once __DIR__ . '/../model/TaskFile.php';
 
-$invalid_dataTime = '';
-if (isset($_GET['error']) && $_GET['error'] === 'invalid_dateTime_extension') {
-    $invalid_dataTime = "Please input active date and time (more than 10 minute of current time)";
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -35,35 +30,33 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_dateTime_extension') {
     <div class="main-agileinfo">
         <div class="agileits-top">
 
-            <form action="../todo/update.php" method="post" enctype="multipart/form-data">
+
+            <?php
+            if (isset($task)) {
+            $taskFile = new TaskFile();
+            $id_update = $task['id'];
+            $text = $task['text'];
+            $date_time = $task['date_time'];
+            ?>
+            <form action="/allTasks/update/updateTask/<?= $id_update ?>" method="post" enctype="multipart/form-data">
+                <input class="text" type="text" name="text" placeholder="Text" value="<?php echo $text ?>" required="">
+                <br>
+                <input type="datetime-local" name="dateTime" value="<?php echo $date_time ?>" placeholder="Data time"
+                       required="">
+                <span style="color: red; margin-left: 10px">Deadline</span>
+                <?php if (!empty($errors['invalid_date_time'])) { ?>
+                    <p style="color: red; margin-top: 10px"><?php echo $errors['invalid_date_time']; ?></p>
+                <?php } ?>
+
+                <div class="file-input-container">
+                    <label for="file-input" class="custom-file-upload">
+                        Choose file
+                    </label>
+                    <input id="file-input" type="file" name="task_file" onchange="fileNameUpdate(this)">
+                    <span id="file-name"></span>
+                </div>
 
                 <?php
-                if (isset($task)) {
-                    $taskFile = new TaskFile();
-                    $id_update = $task['id'];
-                    $text = $task['text'];
-                    $date_time = $task['date_time'];
-                    ?>
-
-                    <input class="text" type="text" name="text" placeholder="Text" value="<?php echo $text ?>" required="">
-                    <br>
-                    <input type="datetime-local"  name="dateTime" value="<?php echo $date_time?>" placeholder="Data time" required="">
-                    <span style="color: red; margin-left: 10px">Deadline</span>
-                    <?php if (!empty($invalid_dataTime)) { ?>
-                        <p style="color: red; margin-top: 10px"><?php echo $invalid_dataTime; ?></p>
-                    <?php } ?>
-
-                    <div class="file-input-container">
-                        <label for="file-input" class="custom-file-upload">
-                            Choose file
-                        </label>
-                        <input id="file-input" type="file" name="task_file" onchange="fileNameUpdate(this)">
-                        <span id="file-name"></span>
-
-                    </div>
-
-                    <input class="text" type="hidden" name="id" value="<?php echo $id_update ?>">
-                    <?php
                 }
                 ?>
 
