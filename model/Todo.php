@@ -82,6 +82,7 @@ class Todo extends DBConnection
         return $success;
     }
 
+
     public function findTaskById($todoId)
     {
         $sql = "SELECT * FROM todo.todo_list WHERE id = ?";

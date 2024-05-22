@@ -2,11 +2,20 @@
 namespace model;
 
 use database\DBConnection;
+use mysqli;
 
 require_once __DIR__ . '/../database/DBConnection.php';
 
 class TaskFile extends DBConnection
 {
+
+    protected mysqli $connection;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->connection = $this->getConnection();
+    }
     public function saveFile($fileName)
     {
         $sql = "INSERT INTO todo.files (files_name) VALUES (?)";

@@ -78,11 +78,11 @@ ob_start();
                         <div class='item-title' style='max-width: 500px; margin: 10px'><?php echo $text; ?></div>
                         <br>
                         <div style="margin-top: 120px">
-                            <a  style='margin-left: 20px;' href="/deleteTask/<?= $itemId ?>" class='delete-task-button'>
+                            <a  style='margin-left: 20px;' href="/allTasks/deleteTask/<?= $itemId ?>" class='delete-task-button'>
                                 Delete
                             </a>
 
-                            <a  style='margin-left: 40px;'  href="/update/<?= $itemId ?>" class='add-task-button'>
+                            <a  style='margin-left: 40px;'  href="/allTasks/update/<?= $itemId ?>" class='add-task-button'>
                                 Update
                             </a>
 

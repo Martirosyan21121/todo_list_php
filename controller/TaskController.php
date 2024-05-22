@@ -27,10 +27,12 @@ class TaskController extends Controller
         $userId = (int)$request->getRouteParams()['id'];
         return $this->render('addTask', ['id' => $userId]);
     }
-    public function addTaskPage()
+
+    public function allTasksPage()
     {
-        return $this->render('addTask');
+        return $this->render('allTasks');
     }
+
     public function saveTask(Request $request)
     {
         $userId = (int)$request->getRouteParams()['id'] ?? null;
@@ -108,16 +110,66 @@ class TaskController extends Controller
 //                $_SESSION['status3'] = $statusCount;
 
                 header('Location: /allTasks/' . $userId);
-            }else {
-                header('Location: /allTasks/addTask?error=registration_failed');
             }
         }
         $tasks = $taskModel->getAllByUserId($userId);
         return $this->render('allTasks', ['tasks' => $tasks]);
     }
 
-    public function deleteTask()
+    public function deleteTask(Request $request)
     {
+        $taskId = (int)$request->getRouteParams()['id'] ?? null;
+        $deleted_directory = __DIR__ . '/../img/taskFiles/';
 
+        $taskModel = new Todo();
+        $taskFile = new TaskFile();
+
+        $task = $taskModel->findTaskById($taskId);
+        $userId = $task['user_id'];
+        $fileId = $task['task_files_id'];
+        $file = $taskFile->findFileById($fileId);
+        $deleteFileName = $file['files_name'];
+
+        if ($file !== null) {
+            $filePathToUpdate = $deleted_directory . $deleteFileName;
+            if (file_exists($filePathToUpdate)) {
+                unlink($filePathToUpdate);
+            }
+        }
+
+        $taskFile->deleteFileById($fileId);
+        $deleteResult = $taskModel->deleteById($taskId);
+        if ($deleteResult) {
+//            $count = $todo->getTaskCountByUserId($userId);
+//            $_SESSION['count'] = $count;
+//
+//            $status = 0;
+//            $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+//            $_SESSION['status'] = $statusCount;
+//
+//            $status = 1;
+//            $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+//            $_SESSION['status1'] = $statusCount;
+//
+//            $status = 2;
+//            $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+//            $_SESSION['status2'] = $statusCount;
+//
+//            $status = 3;
+//            $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+//            $_SESSION['status3'] = $statusCount;
+            header('Location: /allTasks/' . $userId);
+        }
+        $tasks = $taskModel->getAllByUserId($userId);
+        return $this->render('allTasks', ['tasks' => $tasks]);
+    }
+
+    public function showTaskUpdateForm(Request $request)
+    {
+        $taskId = (int)$request->getRouteParams()['id'] ?? null;
+        $taskModel = new Todo();
+        $task = $taskModel->findTaskById($taskId);
+        $userId = $task['user_id'];
+        return $this->render('updateTask', ['task' => $task, 'userId' => $userId]);
     }
 }

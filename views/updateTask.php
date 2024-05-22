@@ -2,8 +2,7 @@
 
 use model\TaskFile;
 
-session_start();
-require_once '../model/TaskFile.php';
+require_once __DIR__ . '/../model/TaskFile.php';
 
 $invalid_dataTime = '';
 if (isset($_GET['error']) && $_GET['error'] === 'invalid_dateTime_extension') {
@@ -39,11 +38,11 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_dateTime_extension') {
             <form action="../todo/update.php" method="post" enctype="multipart/form-data">
 
                 <?php
-                if (isset($_SESSION['task'])) {
+                if (isset($task)) {
                     $taskFile = new TaskFile();
-                    $id_update = $_SESSION['task']['id'];
-                    $text = $_SESSION['task']['text'];
-                    $date_time = $_SESSION['task']['date_time'];
+                    $id_update = $task['id'];
+                    $text = $task['text'];
+                    $date_time = $task['date_time'];
                     ?>
 
                     <input class="text" type="text" name="text" placeholder="Text" value="<?php echo $text ?>" required="">
@@ -74,11 +73,9 @@ if (isset($_GET['error']) && $_GET['error'] === 'invalid_dateTime_extension') {
     </div>
 
     <div class="container">
-        <form action="/allTasks.php" method="post">
-            <button type="submit" class="add-task-button">
-                Back
-            </button>
-        </form>
+        <a href="/allTasks/<?= $userId ?>" class="add-task-button">
+            Back
+        </a>
     </div>
 
     <div class="colorlibcopy-agile">
