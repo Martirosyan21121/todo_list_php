@@ -200,7 +200,6 @@ class TaskController extends Controller
                 $uploaded_image_path = $upload_directory . $file_name;
 
                 if (!move_uploaded_file($file_tmp_name, $uploaded_image_path)) {
-                    header("Location: ../view/add_task.php?error=file_upload_failed");
                     exit;
                 }
 
@@ -209,6 +208,27 @@ class TaskController extends Controller
                 $fileId = $file['id'];
             } else {
                 $fileId = null;
+            }
+            $errors = [];
+
+            date_default_timezone_set('Asia/Yerevan');
+            $currentDateTime = new DateTime();
+            $currentDateTime->modify('+10 minutes');
+            $taskData = $taskModel->findTaskById($taskId);
+            $userId = $taskData['user_id'];
+            try {
+                $inputDateTime = new DateTime($dateTime);
+            } catch (Exception $e) {
+                $errors['invalid_date_time'] = "Invalid date and time format.";
+                return $this->render('updateTask', ['errors' => $errors, 'userId' => $userId, 'task' => $taskData]);
+            }
+
+            if ($inputDateTime < $currentDateTime) {
+                $errors['invalid_date_time'] = "Please input a future date and time (at least 10 minutes from the current time).";
+            }
+
+            if (!empty($errors)) {
+                return $this->render('updateTask', ['errors' => $errors, 'userId' => $userId, 'task' => $taskData]);
             }
         }
 
@@ -219,52 +239,31 @@ class TaskController extends Controller
         $fileToUpdateName = $fileToUpdate['files_name'];
 
         if ($fileId === null) {
-            $fileToUpdateId = $todoData['task_files_id'];
-            if ($fileToUpdateId !== null && $fileToUpdateId !== $fileId) {
-                if ($fileToUpdate !== null) {
+                $fileToUpdateId = $todoData['task_files_id'];
+                if ($fileToUpdateId !== null && $fileToUpdateId !== $fileId) {
+                    if ($fileToUpdate !== null) {
+                        $filePathToUpdate = __DIR__ . '/../img/taskFiles/' . $fileToUpdateName;
+                        if (file_exists($filePathToUpdate)) {
+                            unlink($filePathToUpdate);
+                        }
+                    }
+                }
+                if ($fileToUpdateId !== null) {
+                    $taskFile->deleteFileById($fileToUpdateId);
+                }
+            }
+
+            if (!empty($fileId)) {
+                if ($fileToUpdateId !== null) {
+                    $taskFile->deleteFileById($fileToUpdateId);
                     $filePathToUpdate = __DIR__ . '/../img/taskFiles/' . $fileToUpdateName;
                     if (file_exists($filePathToUpdate)) {
                         unlink($filePathToUpdate);
                     }
                 }
             }
-            if ($fileToUpdateId !== null) {
-                $taskFile->deleteFileById($fileToUpdateId);
-            }
-        }
 
-        if (!empty($fileId)) {
-            if ($fileToUpdateId !== null) {
-                $taskFile->deleteFileById($fileToUpdateId);
-                $filePathToUpdate = __DIR__ . '/../img/taskFiles/' . $fileToUpdateName;
-                if (file_exists($filePathToUpdate)) {
-                    unlink($filePathToUpdate);
-                }
-            }
-        }
 
-        $errors = [];
-
-        date_default_timezone_set('Asia/Yerevan');
-        $currentDateTime = new DateTime();
-        $currentDateTime->modify('+10 minutes');
-
-        try {
-            $inputDateTime = new DateTime($dateTime);
-        } catch (Exception $e) {
-            $errors['invalid_date_time'] = "Invalid date and time format.";
-            return $this->render('updateTask', ['errors' => $errors, 'userId' => $userId]);
-        }
-
-        if ($inputDateTime < $currentDateTime) {
-            $errors['invalid_date_time'] = "Please input a future date and time (at least 10 minutes from the current time).";
-        }
-
-        $taskData = $taskModel->findTaskById($taskId);
-        $userId = $taskData['user_id'];
-        if (!empty($errors)) {
-            return $this->render('updateTask', ['errors' => $errors, 'userId' => $userId]);
-        }
         $taskData = $taskModel->findTaskById($taskId);
         $updateResult = $taskModel->updateText($taskId, $text, $dateTime, $fileId);
         if ($updateResult) {

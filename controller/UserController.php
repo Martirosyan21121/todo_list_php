@@ -44,7 +44,6 @@ class UserController extends Controller
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
 
-
             $errors = [];
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -78,7 +77,6 @@ class UserController extends Controller
             } else {
                 $errors['login_failed'] = "Invalid email or password.";
                 return $this->render('login', ['errors' => $errors]);
-
             }
             exit();
         } else {
@@ -133,9 +131,7 @@ class UserController extends Controller
     public function showUpdateForm($id)
     {
         $userModel = new User();
-
         $user = $userModel->findOne(['id' => $id]);
-
         return $this->render('updateUser', ['user' => $user]);
     }
 
