@@ -102,9 +102,7 @@ ob_start();
                                 echo "<a class='download-file-button' onclick='fileNotFound()' style='margin-left: 70px'>Keep file </a>";
                             }
                             ?>
-                            <form action='/allTasks/deleteTask/<?= $itemId ?>' method='post'>
-                                <input type='hidden' name='itemId' value='<?php echo $itemId; ?>'>
-                                <input type='hidden' name='fileId' value='<?php echo $file_id; ?>'>
+                            <form action='/allTasks/status/<?= $itemId ?>' method='post'>
                                 <select id='statusSelect' class='custom-select' name='status'
                                         style='margin-left: 485px; margin-bottom: 15px; color: #007bff'>
                                     <option value='0' <?php echo ($selected == '0') ? 'selected' : ''; ?>>Not Started
@@ -117,10 +115,8 @@ ob_start();
                                     </option>
                                 </select>
                             </form>
+
                         </div>
-
-
-
                     <div id='<?php echo $modalId; ?>' class='modal'>
                         <div class='modal-content'>
                             <span class='close'>&times;</span>

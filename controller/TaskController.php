@@ -169,6 +169,12 @@ class TaskController extends Controller
         return $this->render('updateTask', ['task' => $task, 'userId' => $userId]);
     }
 
+    public function taskStatus(Request $request)
+    {
+        $taskId = (int)$request->getRouteParams()['id'] ?? null;
+        var_dump($taskId);
+    }
+
     public function updateTask(Request $request)
     {
         $taskId = (int)$request->getRouteParams()['id'] ?? null;
@@ -247,7 +253,7 @@ class TaskController extends Controller
             $inputDateTime = new DateTime($dateTime);
         } catch (Exception $e) {
             $errors['invalid_date_time'] = "Invalid date and time format.";
-            return $this->render('updateTask', ['errors' => $errors]);
+            return $this->render('updateTask', ['errors' => $errors, 'userId' => $userId]);
         }
 
         if ($inputDateTime < $currentDateTime) {

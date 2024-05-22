@@ -71,6 +71,8 @@ class UserController extends Controller
                     $upload_directory = '../img/userPic/';
                     $uploaded_image_path = $upload_directory . $image_name;
                     $userPic->userPicPath($uploaded_image_path);
+                } else {
+                    $userPic->userPicPath(null);
                 }
                 $userModel->userData($userData);
             } else {
