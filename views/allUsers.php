@@ -33,7 +33,7 @@
         <?php
         if (isset($_SESSION['user'])) {
             $adminId = $_SESSION['user']['id'];
-            echo "<a class='deactivate-button' style='margin-left: 80%;' href='/adminPage/$adminId'>Deactivate Users</a>";
+            echo "<a class='deactivate-button' style='margin-left: 80%;' href='/admin/showAllUsers/deactivate/$adminId'>Deactivate Users</a>";
             echo "<br>";
         }
         ?>

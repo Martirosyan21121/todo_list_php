@@ -40,9 +40,9 @@ class Admin extends DBConnection
         $stmt->close();
         return $success;
     }
-    public function getAllUserData()
+    public function getAllActiveUserData()
     {
-        $sql = "SELECT * FROM todo.user where user_type = 'USER'";
+        $sql = "SELECT * FROM todo.user where user_type = 'USER' and status = '0'";
         $result = $this->connection->query($sql);
         return $result->fetch_all(MYSQLI_ASSOC);
     }

@@ -134,7 +134,7 @@ class AdminController extends Controller
    public function showAllUsers()
    {
        $adminModel = new Admin();
-       $allUsers = $adminModel->getAllUserData();
+       $allUsers = $adminModel->getAllActiveUserData();
        return $this->render('allUsers', ['allUsers' => $allUsers]);
    }
 
@@ -171,7 +171,7 @@ class AdminController extends Controller
 
        $user->deleteUserById($userId);
        $adminModel = new Admin();
-       $allUsers = $adminModel->getAllUserData();
+       $allUsers = $adminModel->getAllActiveUserData();
        return $this->render('allUsers', ['allUsers' => $allUsers]);
    }
 
