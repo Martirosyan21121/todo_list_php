@@ -36,14 +36,14 @@
         $email = $admin['email'];
         $userId = $admin['id'];
 
-
-            $profilePic = $_SESSION['pic_path'];
+        if (isset($_SESSION['admin_pic_path'])) {
+            $profilePic = $_SESSION['admin_pic_path'];
             if (!$profilePic == null) {
-                echo "<img class='avatar' alt='Avatar' src='$profilePic' style='margin-left: 80%; margin-top: -50px'>";
-            }else {
-            echo "<img class='avatar' alt='Avatar' src='../img/profilePic.png' style='margin-left: 80%; margin-top: -50px'>";
+                echo "<img class='avatar' alt='Avatar' src='$profilePic' style='margin-left: 80%; margin-top: -30px'>";
+            }
+        } else {
+            echo "<img class='avatar' alt='Avatar' src='../img/profilePic.png' style='margin-left: 80%; margin-top: -30px'>";
         }
-
 
         echo "<h3 style='margin-left: 75%; margin-top: 10px'> Username:____$username</h3>";
         echo "<br>";

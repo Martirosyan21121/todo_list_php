@@ -53,7 +53,7 @@ $app->router->get('/admin/showAllUsers/allDeactivates/activate/{id}', [AdminCont
 $app->router->get('/admin/showAllUsers/edit/{id}', [AdminController::class, 'editUserPage']);
 
 $app->router->post('/admin/updateData/{id}', [AdminController::class, 'updateAdmin']);
-$app->router->post('', [AdminController::class, '']);
+$app->router->post('/admin/showAllUsers/edit/update/{id}', [AdminController::class, 'updateUserByAdmin']);
 $app->router->post('', [AdminController::class, '']);
 
 $app->router->get('/logout', [UserController::class, 'logout']);

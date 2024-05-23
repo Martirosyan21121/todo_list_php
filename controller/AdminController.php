@@ -86,9 +86,9 @@ class AdminController extends Controller
                 $adminPic->savePic($image_name);
                 $file = $adminPic->findFileByName($image_name);
                 $fileId = $file['id'];
-                $_SESSION['pic_path'] = '/img/userPic/' . $image_name;
+                $_SESSION['admin_pic_path'] = '/img/userPic/' . $image_name;
             } else {
-                $_SESSION['pic_path'] = null;
+                $_SESSION['admin_pic_path'] = null;
                 $fileId = null;
             }
         }
@@ -191,6 +191,7 @@ class AdminController extends Controller
         $allUsers = $adminModel->getAllDeActiveUsers();
         return $this->render('adminDeactivatedUsers', ['allUsers' => $allUsers]);
     }
+
     public function activateUser(Request $request)
     {
         $adminModel = new Admin();
@@ -206,5 +207,103 @@ class AdminController extends Controller
         $userModel = new User();
         $user = $userModel->findUserById($userId);
         return $this->render('editUser', ['user' => $user]);
+    }
+
+    public function updateUserByAdmin(Request $request)
+    {
+        $userId = (int)$request->getRouteParams()['id'] ?? null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $userModel = new User();
+            $userPic = new UserPic();
+            $username = $_POST['username'] ?? '';
+            $email = $_POST['email'] ?? '';
+
+            $errors = [];
+            $user = $userModel->findUserById($userId);
+
+            if (strlen($username) < 5 || strlen($username) > 20) {
+                $errors['username_length'] = "Username must be between 5 and 20 characters.";
+            }
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errors['email_format'] = "Invalid email format.";
+            }
+
+            if (!empty($errors)) {
+                return $this->render('editUser', ['errors' => $errors, 'user' => $user]);
+            }
+
+            if (isset($_FILES['user_image']) && $_FILES['user_image']['error'] === UPLOAD_ERR_OK) {
+                $image_tmp_name = $_FILES['user_image']['tmp_name'];
+                $randomNumber = rand(1000, 1000000);
+                $image_name = $userId . $randomNumber . $_FILES['user_image']['name'];
+                $upload_directory = __DIR__ . '/../img/userPic/';
+
+                $allowed_extensions = ['jpg', 'jpeg', 'png'];
+                $file_extension = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
+                if (!in_array($file_extension, $allowed_extensions)) {
+                    $errors['invalid_file_extension'] = "Invalid file extension. 
+                                    Please upload a JPG, JPEG or PNG file.";
+                    return $this->render('editUser', ['errors' => $errors, 'user' => $user]);
+                }
+                if (!file_exists($upload_directory)) {
+                    mkdir($upload_directory, 0777, true);
+                }
+
+                $uploaded_image_path = $upload_directory . $image_name;
+
+                if (!move_uploaded_file($image_tmp_name, $uploaded_image_path)) {
+                    exit;
+                }
+
+                $userPic->savePic($image_name);
+                $file = $userPic->findFileByName($image_name);
+                $fileId = $file['id'];
+                $_SESSION['pic_path'] = '/img/userPic/' . $image_name;
+            } else {
+                $_SESSION['pic_path'] = null;
+                $fileId = null;
+            }
+        }
+
+        $userData = $userModel->findUserById($userId);
+        $fileToUpdateId = $userData['files_id'];
+
+        $fileToUpdate = $userPic->findFileById($fileToUpdateId);
+        $fileToUpdateName = $fileToUpdate['files_name'];
+
+        if ($fileId === null) {
+            $fileToUpdateId = $userData['files_id'];
+            if ($fileToUpdateId !== null && $fileToUpdateId !== $fileId) {
+                if ($fileToUpdate !== null) {
+                    $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
+                    if (file_exists($filePathToUpdate)) {
+                        unlink($filePathToUpdate);
+                    }
+                }
+            }
+            if ($fileToUpdateId !== null) {
+                $userPic->deleteFileById($fileToUpdateId);
+            }
+        }
+
+        if (!empty($fileId)) {
+            if ($fileToUpdateId !== null) {
+                $userPic->deleteFileById($fileToUpdateId);
+                $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
+                if (file_exists($filePathToUpdate)) {
+                    unlink($filePathToUpdate);
+                }
+            }
+        }
+
+        $updateResult = $userModel->updateUser($userId, $username, $email, $fileId);
+        if ($updateResult) {
+            header('Location: /admin/showAllUsers');
+        } else {
+            header('Location: /admin/updateData/' . $userId);
+        }
+        return $this->render('allUsers');
     }
 }

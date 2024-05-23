@@ -198,7 +198,7 @@ class UserController extends Controller
             $email = $_POST['email'] ?? '';
 
             $errors = [];
-            $user = $userModel->findUserByEmail($email);
+            $user = $userModel->findUserById($userId);
 
             if (strlen($username) < 5 || strlen($username) > 20) {
                 $errors['username_length'] = "Username must be between 5 and 20 characters.";
@@ -246,7 +246,7 @@ class UserController extends Controller
             }
         }
 
-            $userData = $userModel->findUserByEmail($email);
+            $userData = $userModel->findUserById($userId);
             $fileToUpdateId = $userData['files_id'];
 
             $fileToUpdate = $userPic->findFileById($fileToUpdateId);

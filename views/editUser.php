@@ -32,7 +32,7 @@
             $email = $user_data['email'];
             $imageName = $user_data['files_id'];
             ?>
-            <form action="/user/update/<?= $user_id ?>" method="post" enctype="multipart/form-data">
+            <form action="/admin/showAllUsers/edit/update/<?= $user_id ?>" method="post" enctype="multipart/form-data">
 
                 <input class="text" type="text" name="username" placeholder="Username"
                        value="<?php echo $username ?>" required="">
