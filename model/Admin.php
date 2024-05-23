@@ -40,23 +40,26 @@ class Admin extends DBConnection
         $stmt->close();
         return $success;
     }
-    public function getAllActiveUserData()
+    public function getAllActiveUsers()
     {
         $sql = "SELECT * FROM todo.user where user_type = 'USER' and status = '0'";
         $result = $this->connection->query($sql);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function deleteUserById($fileId)
+    public function getAllDeActiveUsers()
     {
-        $sql = "DELETE FROM todo.user WHERE id = ?";
-        $stmt = $this->connection->prepare($sql);
-        if (!$stmt) {
-            return false;
-        }
-        $stmt->bind_param("i", $fileId);
-        $success = $stmt->execute();
-        $stmt->close();
-        return $success;
+        $sql = "SELECT * FROM todo.user where user_type = 'USER' and status = '1'";
+        $result = $this->connection->query($sql);
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
+    public function deactivateUserById($userId)
+    {
+        $sql = "UPDATE todo.user SET status = '1' WHERE id = ? AND status = '0'";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        return $stmt->affected_rows > 0;
+    }
+
 }

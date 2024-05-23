@@ -45,7 +45,9 @@ $app->router->get('/adminPage/{id}', [AdminController::class, 'adminSinglePage']
 $app->router->get('/admin/update/{id}', [AdminController::class, 'showAdminUpdateForm']);
 $app->router->get('/admin/showAllUsers', [AdminController::class, 'showAllUsers']);
 $app->router->get('/admin/showAllUsers/delete/{id}', [AdminController::class, 'deleteUser']);
-$app->router->get('/admin/showAllUsers/deactivate/{id}', [AdminController::class, 'deactivateUsers']);
+$app->router->get('/admin/showAllUsers/allDeactivates', [AdminController::class, 'deactivateUsers']);
+$app->router->get('/admin/showAllUsers/deactivate/{id}', [AdminController::class, 'deactivate']);
+$app->router->get('', [AdminController::class, '']);
 
 $app->router->post('/admin/updateData/{id}', [AdminController::class, 'updateAdmin']);
 $app->router->post('', [AdminController::class, '']);

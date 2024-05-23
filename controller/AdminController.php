@@ -134,7 +134,7 @@ class AdminController extends Controller
    public function showAllUsers()
    {
        $adminModel = new Admin();
-       $allUsers = $adminModel->getAllActiveUserData();
+       $allUsers = $adminModel->getAllActiveUsers();
        return $this->render('allUsers', ['allUsers' => $allUsers]);
    }
 
@@ -171,12 +171,23 @@ class AdminController extends Controller
 
        $user->deleteUserById($userId);
        $adminModel = new Admin();
-       $allUsers = $adminModel->getAllActiveUserData();
+       $allUsers = $adminModel->getAllActiveUsers();
        return $this->render('allUsers', ['allUsers' => $allUsers]);
    }
 
    public function deactivateUsers()
    {
+       $adminModel = new Admin();
+       $allUsers = $adminModel->getAllDeActiveUsers();
+       return $this->render('adminDeactivatedUsers', ['allUsers' => $allUsers]);
+   }
 
+   public function deactivate(Request $request)
+   {
+       $adminModel = new Admin();
+       $userId = (int)$request->getRouteParams()['id'] ?? null;
+       $adminModel->deactivateUserById($userId);
+       $allUsers = $adminModel->getAllDeActiveUsers();
+       return $this->render('adminDeactivatedUsers', ['allUsers' => $allUsers]);
    }
 }

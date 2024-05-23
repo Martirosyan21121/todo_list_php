@@ -30,13 +30,8 @@
         }
         ?>
 
-        <?php
-        if (isset($_SESSION['user'])) {
-            $adminId = $_SESSION['user']['id'];
-            echo "<a class='deactivate-button' style='margin-left: 80%;' href='/admin/showAllUsers/deactivate/$adminId'>Deactivate Users</a>";
-            echo "<br>";
-        }
-        ?>
+        <a class='deactivate-button' style='margin-left: 80%;' href='/admin/showAllUsers/allDeactivates'>Deactivate Users</a>
+
     </nav>
 
     <table>
@@ -57,8 +52,6 @@
 
             ?>
 
-
-
         <tr>
             <td> <?= $user['id'] ?>
             <td> <?= $user['username'] ?>
@@ -70,11 +63,13 @@
             <td><a href="/admin/showAllUsers/delete/<?= $user['id'] ?>" class="delete-task-button">Delete</a>
 
             <td>
-                <button class="deactivate-button"> Deactivate</button>
+                <form action="/admin/showAllUsers/deactivate/<?= $user['id'] ?>" method="get">
+                    <button class="deactivate-button"> Deactivate</button>
+                </form>
 
                 <?php }
                 } else {
-            echo '<h1> User not found </h1>';
+            echo '<h1> Users not found </h1>';
             echo '<br>';
                 } ?>
         </tbody>

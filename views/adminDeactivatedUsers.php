@@ -24,12 +24,7 @@
     <h1>All deactivated Users</h1>
 
     <nav class="top-bar">
-        <?php
-        if (isset($_SESSION['user'])) {
-            $adminId = $_SESSION['user']['id'];
-            echo "<a class='add-task-button' style='margin-left: 20px;' href='/adminPage/$adminId'>Back</a>";
-        }
-        ?>
+            <a class='add-task-button' style='margin-left: 20px;' href='/admin/showAllUsers'>Back</a>
     </nav>
 
     <table>
@@ -38,7 +33,8 @@
             <th>ID
             <th>Username
             <th>Email
-            <th>All tasks e
+            <th>Activate User
+            <th>Delete User
         </thead>
         <tbody>
         <?php
@@ -52,10 +48,16 @@
             <td> <?= $user['username'] ?>
             <td> <?= $user['email'] ?>
             <td>
-                <button class="add-task-button"> All Tasks</button>
+                <form>
+                    <button class="add-task-button"> Activate</button>
+                </form>
+            <td>
+                <form action="/admin/showAllUsers/delete/<?= $user['id'] ?>" method="get">
+                    <button class="delete-task-button"> Delete</button>
+                </form>
                 <?php }
                 } else {
-                    echo '<h1> User not found </h1>';
+                    echo '<h1> Users not found </h1>';
                     echo '<br>';
                 } ?>
         </tbody>
