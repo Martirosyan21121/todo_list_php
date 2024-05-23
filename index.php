@@ -22,15 +22,15 @@ $config = [
 ];
 
 $app = new Application(__DIR__, $config);
-
+// user
 $app->router->get('/', [UserController::class, 'home']);
 $app->router->get('/register', [UserController::class, 'register']);
-$app->router->post('/register/user', [UserController::class, 'registerUser']);
-$app->router->get('/singlePage', [UserController::class, 'singlePage']);
-$app->router->post('/login', [UserController::class, 'login']);
+$app->router->get('/singlePage/{id}', [UserController::class, 'singlePage']);
 $app->router->get('/user/update/{id}', [UserController::class, 'showUpdateForm']);
-$app->router->post('/user/update/', [UserController::class, 'updateUser']); // send id
-
+$app->router->post('/user/update/{id}', [UserController::class, 'updateUser']);
+$app->router->post('/register/user', [UserController::class, 'registerUser']);
+$app->router->post('/login', [UserController::class, 'login']);
+// task
 $app->router->get('/allTasks/{id}', [TaskController::class, 'allUserTasks']);
 $app->router->get('/allTasks/addTask/{id}', [TaskController::class, 'addTask']);
 $app->router->get('/allTasks/deleteTask/{id}', [TaskController::class, 'deleteTask']);
@@ -38,10 +38,13 @@ $app->router->get('/allTasks/update/{id}', [TaskController::class, 'showTaskUpda
 $app->router->get('/allTasks/status/{id}', [TaskController::class, 'taskStatus']);
 $app->router->post('/allTasks/update/updateTask/{id}', [TaskController::class, 'updateTask']);
 $app->router->post('/allTasks/addTask/saveTask/{id}', [TaskController::class, 'saveTask']);
-
+//admin
 $app->router->get('/adminPage/{id}', [AdminController::class, 'adminSinglePage']);
 $app->router->get('/admin/update/{id}', [AdminController::class, 'showAdminUpdateForm']);
+$app->router->get('/admin/showAllUsers', [AdminController::class, 'showAllUsers']);
+
 $app->router->post('/admin/updateData/{id}', [AdminController::class, 'updateAdmin']);
+$app->router->post('', [AdminController::class, '']);
 $app->router->post('', [AdminController::class, '']);
 
 $app->router->get('/logout', [UserController::class, 'logout']);

@@ -79,7 +79,6 @@ class AdminController extends Controller
                $uploaded_image_path = $upload_directory . $image_name;
 
                if (!move_uploaded_file($image_tmp_name, $uploaded_image_path)) {
-                   header("Location: ../view/updateUser.php?error=file_upload_failed");
                    exit;
                }
 
@@ -88,19 +87,19 @@ class AdminController extends Controller
                $fileId = $file['id'];
                $_SESSION['pic_path'] = '/img/userPic/' . $image_name;
            } else {
-
+               $_SESSION['pic_path'] = null;
                $fileId = null;
            }
        }
 
        $adminData = $adminModel->findAdminById($adminId);
-       $fileToUpdateId = $adminData['task_files_id'];
+       $fileToUpdateId = $adminData['files_id'];
 
        $fileToUpdate = $adminPic->findFileById($fileToUpdateId);
        $fileToUpdateName = $fileToUpdate['files_name'];
 
        if ($fileId === null) {
-           $fileToUpdateId = $adminData['task_files_id'];
+           $fileToUpdateId = $adminData['files_id'];
            if ($fileToUpdateId !== null && $fileToUpdateId !== $fileId) {
                if ($fileToUpdate !== null) {
                    $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
@@ -123,8 +122,6 @@ class AdminController extends Controller
                }
            }
        }
-
-
        $updateResult = $adminModel->updateAdmin($adminId, $username, $email, $fileId);
        if ($updateResult) {
            header('Location: /adminPage/' . $adminId);
@@ -132,5 +129,12 @@ class AdminController extends Controller
            header('Location: /admin/update/' . $adminId);
        }
        return $this->render('adminSinglePage', ['admin' => $admin]);
+   }
+
+   public function showAllUsers()
+   {
+       $adminModel = new Admin();
+       $allUsers = $adminModel->getAllUserData();
+       return $this->render('allUsers', ['allUsers' => $allUsers]);
    }
 }

@@ -28,7 +28,12 @@ ob_start();
 <body>
 <div class="main-w3layouts wrapper">
     <h1>All tasks</h1>
-    <a href="/singlePage" class="add-task-button" style="margin-left: 20px">Back to your profile page</a>
+    <?php
+    if (isset($_SESSION['user'])) {
+        $userId = $_SESSION['user']['id'];
+        echo "<a class='add-task-button' style='margin-left: 20px;' href='/singlePage/$userId'>Back</a>";
+    }
+    ?>
 
     <div class="cart">
         <?php
@@ -75,48 +80,44 @@ ob_start();
                         Until
                         - <?php echo $dataTime; ?></div>
 
-                        <div class='item-title' style='max-width: 500px; margin: 10px'><?php echo $text; ?></div>
-                        <br>
-                        <div style="margin-top: 120px">
-                            <a  style='margin-left: 20px;' href="/allTasks/deleteTask/<?= $itemId ?>" class='delete-task-button'>
-                                Delete
-                            </a>
+                    <div class='item-title' style='max-width: 500px; margin: 10px'><?php echo $text; ?></div>
+                    <br>
+                    <div style="margin-top: 120px">
+                        <a style='margin-left: 20px;' href="/allTasks/deleteTask/<?= $itemId ?>"
+                           class='delete-task-button'>
+                            Delete
+                        </a>
 
-                            <a  style='margin-left: 40px;'  href="/allTasks/update/<?= $itemId ?>" class='add-task-button'>
-                                Update
-                            </a>
+                        <a style='margin-left: 40px;' href="/allTasks/update/<?= $itemId ?>" class='add-task-button'>
+                            Update
+                        </a>
 
-                            <?php
-                            if ($file !== null) {
-                                $fileName = $file['files_name'];
-                                if ($fileName !== null) {
-                                    $downloadPath =  '/../img/taskFiles/' . $fileName;
-                                    ?>
-                                    <a href="<?php echo $downloadPath ?>" download style='margin-left: 70px;'
-                                       class='download-file-button'>Keep file
-                                    </a>
-                                <?php } else {
-                                    echo "<a class='download-file-button' style='margin-left: 70px' onclick='fileNotFound()'>Keep file </a>";
-                                }
-                            } else {
-                                echo "<a class='download-file-button' onclick='fileNotFound()' style='margin-left: 70px'>Keep file </a>";
+                        <?php
+                        if ($file !== null) {
+                            $fileName = $file['files_name'];
+                            if ($fileName !== null) {
+                                $downloadPath = '/../img/taskFiles/' . $fileName;
+                                ?>
+                                <a href="<?php echo $downloadPath ?>" download style='margin-left: 70px;'
+                                   class='download-file-button'>Keep file
+                                </a>
+                            <?php } else {
+                                echo "<a class='download-file-button' style='margin-left: 70px' onclick='fileNotFound()'>Keep file </a>";
                             }
-                            ?>
-                            <form action='/allTasks/status/<?= $itemId ?>' method='get'>
-                                <select id='statusSelect' class='custom-select' name='status'
-                                        style='margin-left: 485px; margin-bottom: 15px; color: #007bff'>
-                                    <option value='0' <?php echo ($selected == '0') ? 'selected' : ''; ?>>Not Started
-                                    </option>
-                                    <option value='1' <?php echo ($selected == '1') ? 'selected' : ''; ?>>In Process
-                                    </option>
-                                    <option value='2' <?php echo ($selected == '2') ? 'selected' : ''; ?>>In Test
-                                    </option>
-                                    <option value='3' <?php echo ($selected == '3') ? 'selected' : ''; ?>>Done
-                                    </option>
-                                </select>
-                            </form>
+                        } else {
+                            echo "<a class='download-file-button' onclick='fileNotFound()' style='margin-left: 70px'>Keep file </a>";
+                        }
+                        ?>
+                        <select id='statusSelect' class='custom-select' name='status'
+                                onchange="updateTaskStatus(<?= $itemId ?>, this.value)"
+                                style='margin-left: 485px; margin-bottom: 15px; color: #007bff'>
+                            <option value='0' <?= $selected == '0' ? 'selected' : ''; ?>>Not Started</option>
+                            <option value='1' <?= $selected == '1' ? 'selected' : ''; ?>>In Process</option>
+                            <option value='2' <?= $selected == '2' ? 'selected' : ''; ?>>In Test</option>
+                            <option value='3' <?= $selected == '3' ? 'selected' : ''; ?>>Done</option>
+                        </select>
 
-                        </div>
+                    </div>
                     <div id='<?php echo $modalId; ?>' class='modal'>
                         <div class='modal-content'>
                             <span class='close'>&times;</span>
@@ -176,12 +177,22 @@ ob_start();
     </ul>
 </div>
 
-<script src="../js/script.js"></script>
 <script src="../js/taskHistory.js"></script>
 
 <script>
     function fileNotFound() {
         alert("Task has on file");
+    }
+
+    function updateTaskStatus(taskId, status) {
+        fetch(`/allTasks/status/${taskId}?status=${status}`, {
+            method: 'GET',
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                }
+            })
     }
 </script>
 </body>

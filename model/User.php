@@ -69,6 +69,19 @@ class User extends DBConnection
         }
     }
 
+    public function findUserById($userId){
+        $stmt = $this->connection->prepare("SELECT * FROM todo.user WHERE id = ?");
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows == 1) {
+            return $result->fetch_assoc();
+        } else {
+            return null;
+        }
+    }
+
     public static function findOne($condition)
     {
         $primaryKey = static::primaryKey();
@@ -94,7 +107,7 @@ class User extends DBConnection
         if ($user['user_type'] === 'ADMIN') {
             header("Location: /adminPage/" . $user['id']);
         } else {
-            header("Location: /singlePage");
+            header("Location: /singlePage/" . $user['id']);
         }
     }
 

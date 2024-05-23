@@ -26,7 +26,7 @@
     <nav class="top-bar">
         <a class="add-task-button" href="../loginData/logout.php" style="margin-left: 50px">Logout</a>
         
-        <a class="add-task-button" href="../router/Router.php?url=/allUsers" style="margin-left: 50px">All Users</a>
+        <a class="add-task-button" href="/admin/showAllUsers" style="margin-left: 50px">All Users</a>
 
     </nav>
 

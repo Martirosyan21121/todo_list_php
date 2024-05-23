@@ -65,11 +65,10 @@ use model\User;
     ?>
 
     <?php
-    if (isset($_SESSION['user'])) {
-        $user = new User();
-        $username = $_SESSION['user']['username'];
-        $email = $_SESSION['user']['email'];
-        $userId = $_SESSION['user']['id'];
+    if (isset($user)) {
+        $username = $user['username'];
+        $email = $user['email'];
+        $userId = $user['id'];
         if (isset($_SESSION['pic_path'])) {
             $profilePic = $_SESSION['pic_path'];
             if (!$profilePic == null) {
@@ -89,12 +88,11 @@ use model\User;
 
     <br>
 
-    <?php
-    if (isset($_SESSION['user'])) {
-        $userId = $_SESSION['user']['id'];
-        echo "<a class='add-task-button' style='margin-left: 75%;' href='/user/update/$userId'>Update your data</a>";
-    }
-    ?>
+
+
+    <a class='add-task-button' style='margin-left: 75%;' href='/user/update/<?= $userId ?>'>Update your data</a>
+
+
 
     <div class="colorlibcopy-agile">
         <p>© 2024 project ToDo list using PHP</p>

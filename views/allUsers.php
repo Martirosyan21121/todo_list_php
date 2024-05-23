@@ -1,12 +1,3 @@
-<?php
-
-use controller\AdminController;
-
-require_once '../controller/AdminController.php';
-session_start();
-ob_start();
-
-?>
 <!DOCTYPE html>
 <html lang="">
 <head>
@@ -32,7 +23,7 @@ ob_start();
     <h1>All Users</h1>
 
     <nav class="top-bar">
-        <a href="/adminSinglePage.php" class="add-task-button" style="margin-left: 50px">Back</a>
+        <a href="/adminPage/" class="add-task-button" style="margin-left: 50px">Back</a>
     </nav>
 
     <table>
@@ -48,12 +39,12 @@ ob_start();
         </thead>
         <tbody>
         <?php
-        $adminController = new AdminController();
-        $allUsers = $adminController->allUsersData();
+        if (!empty($allUsers)){
+        foreach ($allUsers as $user){
+            ?>
 
-        foreach ($allUsers
 
-        as $user): ?>
+
         <tr>
             <td> <?= $user['id'] ?>
             <td> <?= $user['username'] ?>
@@ -62,11 +53,16 @@ ob_start();
                 <button class="add-task-button"> All Tasks</button>
             <td>
                 <button class="download-file-button"> Edit</button>
-            <td><a href="../router/Router.php?url=/delete?id=<?= $user['id'] ?>" class="delete-task-button">Delete</a></td>
+            <td><a href="../router/Router.php?url=/delete?id=<?= $user['id'] ?>" class="delete-task-button">Delete</a>
+            </td>
 
             <td>
                 <button class="deactivate-button"> Deactivate</button>
-                <?php endforeach; ?>
+                <?php }
+                } else {
+            echo '<h1> User not found </h1>';
+            echo '<br>';
+                } ?>
         </tbody>
     </table>
     <br>

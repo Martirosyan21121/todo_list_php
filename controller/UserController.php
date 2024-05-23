@@ -5,6 +5,7 @@ namespace controller;
 use model\User;
 use model\UserPic;
 use thecodeholic\phpmvc\Controller;
+use thecodeholic\phpmvc\Request;
 
 require_once 'model\User.php';
 require_once 'model\UserPic.php';
@@ -27,9 +28,12 @@ class UserController extends Controller
         $userModel->logout();
     }
 
-    public function singlePage()
+    public function singlePage(Request $request)
     {
-        return $this->render('singlePage');
+        $userId = (int)$request->getRouteParams()['id'] ?? null;
+        $userModel = new User();
+        $user = $userModel->findUserById($userId);
+        return $this->render('singlePage',  ['user' => $user]);
     }
 
     public function login()
@@ -124,28 +128,27 @@ class UserController extends Controller
         }
     }
 
-    public function showUpdateForm($id)
+    public function showUpdateForm(Request $request)
     {
+        $userId = (int)$request->getRouteParams()['id'] ?? null;
         $userModel = new User();
-        $user = $userModel->findOne(['id' => $id]);
+        $user = $userModel->findUserById($userId);
         return $this->render('updateUser', ['user' => $user]);
     }
 
-    public function updateUser()
+    public function updateUser(Request $request)
     {
+        $userId = (int)$request->getRouteParams()['id'] ?? null;
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!isset($_SESSION['user'])) {
-                header('Location: /');
-                exit();
-            }
 
             $userModel = new User();
             $userPic = new UserPic();
-            $userId = $_SESSION['user']['id'];
             $username = $_POST['username'] ?? '';
             $email = $_POST['email'] ?? '';
 
             $errors = [];
+            $user = $userModel->findUserByEmail($email);
 
             if (strlen($username) < 5 || strlen($username) > 20) {
                 $errors['username_length'] = "Username must be between 5 and 20 characters.";
@@ -156,13 +159,13 @@ class UserController extends Controller
             }
 
             if (!empty($errors)) {
-                return $this->render('updateUser', ['errors' => $errors]);
+                return $this->render('updateUser', ['errors' => $errors, 'user' => $user]);
             }
 
             if (isset($_FILES['user_image']) && $_FILES['user_image']['error'] === UPLOAD_ERR_OK) {
                 $image_tmp_name = $_FILES['user_image']['tmp_name'];
                 $randomNumber = rand(1000, 1000000);
-                $image_name = $userId . $randomNumber. $_FILES['user_image']['name'];
+                $image_name = $userId . $randomNumber . $_FILES['user_image']['name'];
                 $upload_directory = __DIR__ . '/../img/userPic/';
 
                 $allowed_extensions = ['jpg', 'jpeg', 'png'];
@@ -170,7 +173,7 @@ class UserController extends Controller
                 if (!in_array($file_extension, $allowed_extensions)) {
                     $errors['invalid_file_extension'] = "Invalid file extension. 
                                     Please upload a JPG, JPEG or PNG file.";
-                    return $this->render('updateUser', ['errors' => $errors]);
+                    return $this->render('updateUser', ['errors' => $errors, 'user' => $user]);
                 }
                 if (!file_exists($upload_directory)) {
                     mkdir($upload_directory, 0777, true);
@@ -179,7 +182,6 @@ class UserController extends Controller
                 $uploaded_image_path = $upload_directory . $image_name;
 
                 if (!move_uploaded_file($image_tmp_name, $uploaded_image_path)) {
-                    header("Location: ../view/updateUser.php?error=file_upload_failed");
                     exit;
                 }
 
@@ -192,6 +194,7 @@ class UserController extends Controller
                 $_SESSION['pic_path'] = null;
                 $fileId = null;
             }
+        }
 
             $userData = $userModel->findUserByEmail($email);
             $fileToUpdateId = $userData['files_id'];
@@ -203,7 +206,7 @@ class UserController extends Controller
                 $fileToUpdateId = $userData['files_id'];
                 if ($fileToUpdateId !== null && $fileToUpdateId !== $fileId) {
                     if ($fileToUpdate !== null) {
-                        $filePathToUpdate =  __DIR__ . '/../img/userPic/' . $fileToUpdateName;
+                        $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
                         if (file_exists($filePathToUpdate)) {
                             unlink($filePathToUpdate);
                         }
@@ -226,18 +229,10 @@ class UserController extends Controller
 
             $updateResult = $userModel->updateUser($userId, $username, $email, $fileId);
             if ($updateResult) {
-                $_SESSION['user']['username'] = $username;
-                $_SESSION['user']['email'] = $email;
-                $_SESSION['user']['files_id'] = $email;
-                header('Location: /singlePage');
+                header('Location: /singlePage/' . $userId);
             } else {
-                $errors['update_failed'] = "Update failed. Please try again.";
-                return $this->render('updateUser', ['errors' => $errors, 'user' => ['id' => $userId, 'username' => $username, 'email' => $email]]);
+                header('Location: /user/update/' . $userId);
             }
-            exit();
-        } else {
-            header('Location: /user/update');
-            exit();
-        }
+            return $this->render('singlePage', ['user' => $userId]);
     }
 }

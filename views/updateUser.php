@@ -22,16 +22,18 @@
     <div class="main-agileinfo">
         <div class="agileits-top">
 
-            <form action="/user/update" method="post" enctype="multipart/form-data">
-                <?php
-                if (isset($_SESSION['user'])) {
-                    $user_data = $_SESSION['user'];
 
-                    $user_id = $user_data['id'];
-                    $username = $user_data['username'];
-                    $email = $user_data['email'];
-                    $imageName = $user_data['files_id'];
-                    ?>
+            <?php
+            if (isset($user)) {
+            $user_data = $user;
+
+            $user_id = $user_data['id'];
+            $username = $user_data['username'];
+            $email = $user_data['email'];
+            $imageName = $user_data['files_id'];
+            ?>
+            <form action="/user/update/<?= $user_id ?>" method="post" enctype="multipart/form-data">
+
                     <input class="text" type="text" name="username" placeholder="Username"
                            value="<?php echo $username ?>" required="">
 
@@ -57,14 +59,13 @@
                         <p style="color: red; margin-top: 10px"><?php echo $errors['invalid_file_extension']; ?></p>
                     <?php } ?>
 
-                    <input class="text" type="hidden" name="id" value="<?php echo $user_id ?>">
                     <?php
                 }
                 ?>
                 <input type="submit" value="UPDATE">
             </form>
 
-            <p>Back to your page <a href="/singlePage"> Go Back !</a></p>
+            <p>Back to your page <a href="/singlePage/<?= $user_id ?>"> Go Back !</a></p>
 
         </div>
     </div>
