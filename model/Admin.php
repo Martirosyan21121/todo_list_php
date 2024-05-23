@@ -62,4 +62,13 @@ class Admin extends DBConnection
         return $stmt->affected_rows > 0;
     }
 
+    public function activateUserById($userId)
+    {
+        $sql = "UPDATE todo.user SET status = '0' WHERE id = ? AND status = '1'";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        return $stmt->affected_rows > 0;
+    }
+
 }

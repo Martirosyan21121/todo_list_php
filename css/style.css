@@ -792,6 +792,7 @@ input.checkbox:checked:after {
     background-color: rgba(0, 25, 158, 0.75);
 }
 
+
 .delete-task-button {
     padding: 10px 20px;
     font-size: 16px;

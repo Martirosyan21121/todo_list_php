@@ -42,7 +42,6 @@
             <th>Email
             <th>All tasks
             <th>Edit user
-            <th>Delete
             <th>Deactivate
         </thead>
         <tbody>
@@ -60,7 +59,6 @@
                 <button class="add-task-button"> All Tasks</button>
             <td>
                 <button class="download-file-button"> Edit</button>
-            <td><a href="/admin/showAllUsers/delete/<?= $user['id'] ?>" class="delete-task-button">Delete</a>
 
             <td>
                 <form action="/admin/showAllUsers/deactivate/<?= $user['id'] ?>" method="get">

@@ -48,12 +48,12 @@
             <td> <?= $user['username'] ?>
             <td> <?= $user['email'] ?>
             <td>
-                <form>
-                    <button class="add-task-button"> Activate</button>
+                <form action="/admin/showAllUsers/allDeactivates/activate/<?= $user['id'] ?>" method="get">
+                    <button class="add-task-button"> Activate </button>
                 </form>
             <td>
-                <form action="/admin/showAllUsers/delete/<?= $user['id'] ?>" method="get">
-                    <button class="delete-task-button"> Delete</button>
+                <form action="/admin/showAllUsers/allDeactivates/delete/<?= $user['id'] ?>" method="get">
+                    <button class="delete-task-button"> Delete </button>
                 </form>
                 <?php }
                 } else {
