@@ -145,7 +145,7 @@ class AdminController extends Controller
        $userPic = new UserPic();
        $todo = new Todo();
        $taskFile = new TaskFile();
-       $userData = $user->getUserDataById($userId);
+       $userData = $user->findUserById($userId);
        $userPicId = $userData['files_id'];
        if ($userPicId !== null){
            $fileToUpdate = $userPic->findFileById($userData['files_id']);
@@ -173,5 +173,10 @@ class AdminController extends Controller
        $adminModel = new Admin();
        $allUsers = $adminModel->getAllUserData();
        return $this->render('allUsers', ['allUsers' => $allUsers]);
+   }
+
+   public function deactivateUsers()
+   {
+
    }
 }

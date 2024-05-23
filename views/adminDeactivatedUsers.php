@@ -1,7 +1,8 @@
+
 <!DOCTYPE html>
 <html lang="">
 <head>
-    <title>All Users</title>
+    <title>Single page</title>
     <link rel="icon" href="/img/logo/logo.jpg" type="image/gif" sizes="any">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -20,21 +21,13 @@
 </head>
 <body>
 <div class="main-w3layouts wrapper">
-    <h1>All Active Users</h1>
+    <h1>All deactivated Users</h1>
 
     <nav class="top-bar">
         <?php
         if (isset($_SESSION['user'])) {
             $adminId = $_SESSION['user']['id'];
             echo "<a class='add-task-button' style='margin-left: 20px;' href='/adminPage/$adminId'>Back</a>";
-        }
-        ?>
-
-        <?php
-        if (isset($_SESSION['user'])) {
-            $adminId = $_SESSION['user']['id'];
-            echo "<a class='deactivate-button' style='margin-left: 80%;' href='/adminPage/$adminId'>Deactivate Users</a>";
-            echo "<br>";
         }
         ?>
     </nav>
@@ -45,19 +38,14 @@
             <th>ID
             <th>Username
             <th>Email
-            <th>All tasks
-            <th>Edit user
-            <th>Delete
-            <th>Deactivate
+            <th>All tasks e
         </thead>
         <tbody>
         <?php
         if (!empty($allUsers)){
         foreach ($allUsers as $user){
 
-            ?>
-
-
+        ?>
 
         <tr>
             <td> <?= $user['id'] ?>
@@ -65,17 +53,10 @@
             <td> <?= $user['email'] ?>
             <td>
                 <button class="add-task-button"> All Tasks</button>
-            <td>
-                <button class="download-file-button"> Edit</button>
-            <td><a href="/admin/showAllUsers/delete/<?= $user['id'] ?>" class="delete-task-button">Delete</a>
-
-            <td>
-                <button class="deactivate-button"> Deactivate</button>
-
                 <?php }
                 } else {
-            echo '<h1> User not found </h1>';
-            echo '<br>';
+                    echo '<h1> User not found </h1>';
+                    echo '<br>';
                 } ?>
         </tbody>
     </table>
@@ -100,3 +81,4 @@
 </div>
 </body>
 </html>
+

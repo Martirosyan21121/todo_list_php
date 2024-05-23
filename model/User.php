@@ -80,19 +80,6 @@ class User extends DBConnection
         }
     }
 
-    public function getUserDataById($id) {
-        $stmt = $this->connection->prepare("SELECT * FROM todo.user WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows == 1) {
-            return $result->fetch_assoc();
-        } else {
-            return null;
-        }
-    }
-
     public function findUserById($userId){
         $stmt = $this->connection->prepare("SELECT * FROM todo.user WHERE id = ?");
         $stmt->bind_param("i", $userId);
@@ -143,7 +130,6 @@ class User extends DBConnection
         $stmt->close();
         return $success;
     }
-
 
     public function logout()
     {

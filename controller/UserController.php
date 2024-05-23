@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use model\Todo;
 use model\User;
 use model\UserPic;
 use thecodeholic\phpmvc\Controller;
@@ -32,7 +33,29 @@ class UserController extends Controller
     {
         $userId = (int)$request->getRouteParams()['id'] ?? null;
         $userModel = new User();
+        $taskModel = new Todo();
         $user = $userModel->findUserById($userId);
+
+        $count = $taskModel->getTaskCountByUserId($userId);
+        $_SESSION['count'] = $count;
+
+        $status = 0;
+        $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+        $_SESSION['status'] = $statusCount;
+
+        $status = 1;
+        $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+        $_SESSION['status1'] = $statusCount;
+
+        $status = 2;
+        $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+        $_SESSION['status2'] = $statusCount;
+
+        $status = 3;
+        $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+        $_SESSION['status3'] = $statusCount;
+
+
         return $this->render('singlePage',  ['user' => $user]);
     }
 
@@ -41,6 +64,7 @@ class UserController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userModel = new User();
             $userPic = new UserPic();
+            $taskModel = new Todo();
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
 
@@ -73,6 +97,27 @@ class UserController extends Controller
                 } else {
                     $userPic->userPicPath(null);
                 }
+                $user1 = $userModel->findUserByEmail($email);
+                $userId = $user1['id'];
+                $count = $taskModel->getTaskCountByUserId($userId);
+                $_SESSION['count'] = $count;
+
+                $status = 0;
+                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+                $_SESSION['status'] = $statusCount;
+
+                $status = 1;
+                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+                $_SESSION['status1'] = $statusCount;
+
+                $status = 2;
+                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+                $_SESSION['status2'] = $statusCount;
+
+                $status = 3;
+                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+                $_SESSION['status3'] = $statusCount;
+
                 $userModel->userData($userData);
             } else {
                 $errors['login_failed'] = "Invalid email or password.";

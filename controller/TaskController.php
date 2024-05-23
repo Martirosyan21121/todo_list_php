@@ -24,6 +24,7 @@ class TaskController extends Controller
 
     public function addTask(Request $request)
     {
+
         $userId = (int)$request->getRouteParams()['id'];
         return $this->render('addTask', ['id' => $userId]);
     }
@@ -86,24 +87,24 @@ class TaskController extends Controller
                     $taskModel->updateText($taskId, $text, $dateTime, $fileId);
                 }
 
-//                $count = $taskModel->getTaskCountByUserId($userId);
-//                $_SESSION['count'] = $count;
-//
-//                $status = 0;
-//                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
-//                $_SESSION['status'] = $statusCount;
-//
-//                $status = 1;
-//                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
-//                $_SESSION['status1'] = $statusCount;
-//
-//                $status = 2;
-//                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
-//                $_SESSION['status2'] = $statusCount;
-//
-//                $status = 3;
-//                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
-//                $_SESSION['status3'] = $statusCount;
+                $count = $taskModel->getTaskCountByUserId($userId);
+                $_SESSION['count'] = $count;
+
+                $status = 0;
+                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+                $_SESSION['status'] = $statusCount;
+
+                $status = 1;
+                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+                $_SESSION['status1'] = $statusCount;
+
+                $status = 2;
+                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+                $_SESSION['status2'] = $statusCount;
+
+                $status = 3;
+                $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+                $_SESSION['status3'] = $statusCount;
 
                 header('Location: /allTasks/' . $userId);
             }
@@ -136,24 +137,24 @@ class TaskController extends Controller
         $taskFile->deleteFileById($fileId);
         $deleteResult = $taskModel->deleteById($taskId);
         if ($deleteResult) {
-//            $count = $todo->getTaskCountByUserId($userId);
-//            $_SESSION['count'] = $count;
-//
-//            $status = 0;
-//            $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
-//            $_SESSION['status'] = $statusCount;
-//
-//            $status = 1;
-//            $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
-//            $_SESSION['status1'] = $statusCount;
-//
-//            $status = 2;
-//            $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
-//            $_SESSION['status2'] = $statusCount;
-//
-//            $status = 3;
-//            $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
-//            $_SESSION['status3'] = $statusCount;
+            $count = $taskModel->getTaskCountByUserId($userId);
+            $_SESSION['count'] = $count;
+
+            $status = 0;
+            $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+            $_SESSION['status'] = $statusCount;
+
+            $status = 1;
+            $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+            $_SESSION['status1'] = $statusCount;
+
+            $status = 2;
+            $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+            $_SESSION['status2'] = $statusCount;
+
+            $status = 3;
+            $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
+            $_SESSION['status3'] = $statusCount;
             header('Location: /allTasks/' . $userId);
         }
         $tasks = $taskModel->getAllByUserId($userId);
