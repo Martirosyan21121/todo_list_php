@@ -50,7 +50,7 @@ $app->router->get('/admin/showAllUsers/deactivate/{id}', [AdminController::class
 $app->router->get('/admin/showAllUsers/allDeactivates/delete/{id}', [AdminController::class, 'deleteUser']);
 $app->router->get('/admin/showAllUsers/allDeactivates/activate/{id}', [AdminController::class, 'activateUser']);
 
-$app->router->get('', [AdminController::class, '']);
+$app->router->get('/admin/showAllUsers/edit/{id}', [AdminController::class, 'editUserPage']);
 
 $app->router->post('/admin/updateData/{id}', [AdminController::class, 'updateAdmin']);
 $app->router->post('', [AdminController::class, '']);

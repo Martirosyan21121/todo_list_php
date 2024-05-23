@@ -199,4 +199,12 @@ class AdminController extends Controller
         $allUsers = $adminModel->getAllActiveUsers();
         return $this->render('allUsers', ['allUsers' => $allUsers]);
     }
+
+    public function editUserPage(Request $request)
+    {
+        $userId = (int)$request->getRouteParams()['id'] ?? null;
+        $userModel = new User();
+        $user = $userModel->findUserById($userId);
+        return $this->render('editUser', ['user' => $user]);
+    }
 }

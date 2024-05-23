@@ -58,11 +58,13 @@
             <td>
                 <button class="add-task-button"> All Tasks</button>
             <td>
-                <button class="download-file-button"> Edit</button>
+                <form action="/admin/showAllUsers/edit/<?= $user['id'] ?>" method="get">
+                    <button class="download-file-button"> Edit</button>
+                </form>
 
             <td>
                 <form action="/admin/showAllUsers/deactivate/<?= $user['id'] ?>" method="get">
-                    <button class="deactivate-button"> Deactivate</button>
+                    <button class="deactivate-button" type="submit"> Deactivate</button>
                 </form>
 
                 <?php }

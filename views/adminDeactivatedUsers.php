@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="">
 <head>
-    <title>Single page</title>
+    <title>Deactivated Users</title>
     <link rel="icon" href="/img/logo/logo.jpg" type="image/gif" sizes="any">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -49,11 +49,11 @@
             <td> <?= $user['email'] ?>
             <td>
                 <form action="/admin/showAllUsers/allDeactivates/activate/<?= $user['id'] ?>" method="get">
-                    <button class="add-task-button"> Activate </button>
+                    <button class="add-task-button" type="submit"> Activate </button>
                 </form>
             <td>
                 <form action="/admin/showAllUsers/allDeactivates/delete/<?= $user['id'] ?>" method="get">
-                    <button class="delete-task-button"> Delete </button>
+                    <button class="delete-task-button" type="submit"> Delete </button>
                 </form>
                 <?php }
                 } else {
