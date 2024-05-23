@@ -170,7 +170,7 @@ class UserController extends Controller
                 $userData = $userModel->findUserByEmail($email);
                 $userModel->userData($userData);
             } else {
-                header('Location: /register/user?error=registration_failed');
+                header('Location: /register');
             }
             exit();
         } else {
