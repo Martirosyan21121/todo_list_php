@@ -25,6 +25,7 @@ $app = new Application(__DIR__, $config);
 // user
 $app->router->get('/', [UserController::class, 'home']);
 $app->router->get('/register', [UserController::class, 'register']);
+$app->router->get('/deactivate', [UserController::class, 'deactivate']);
 $app->router->get('/singlePage/{id}', [UserController::class, 'singlePage']);
 $app->router->get('/user/update/{id}', [UserController::class, 'showUpdateForm']);
 

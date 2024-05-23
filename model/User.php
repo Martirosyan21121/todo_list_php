@@ -56,7 +56,8 @@ class User extends DBConnection
         return false;
     }
 
-    public function findUserByEmail($email){
+    public function findUserByEmail($email)
+    {
         $stmt = $this->connection->prepare("SELECT * FROM todo.user WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -68,7 +69,9 @@ class User extends DBConnection
             return null;
         }
     }
-    public function deleteUserById($id) {
+
+    public function deleteUserById($id)
+    {
         $stmt = $this->connection->prepare("DELETE FROM todo.user WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -80,7 +83,8 @@ class User extends DBConnection
         }
     }
 
-    public function findUserById($userId){
+    public function findUserById($userId)
+    {
         $stmt = $this->connection->prepare("SELECT * FROM todo.user WHERE id = ?");
         $stmt->bind_param("i", $userId);
         $stmt->execute();
@@ -114,8 +118,9 @@ class User extends DBConnection
     public function userData($user)
     {
         $_SESSION['user'] = $user;
-
-        if ($user['user_type'] === 'ADMIN') {
+        if ($user['status'] === 1) {
+            header("Location: /deactivate");
+        } else if ($user['user_type'] === 'ADMIN') {
             header("Location: /adminPage/" . $user['id']);
         } else {
             header("Location: /singlePage/" . $user['id']);

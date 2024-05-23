@@ -23,6 +23,11 @@ class UserController extends Controller
         return $this->render('register');
     }
 
+    public function deactivate()
+    {
+        return $this->render('accountDeactivate');
+    }
+
     public function logout()
     {
         $userModel = new User();
