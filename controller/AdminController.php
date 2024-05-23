@@ -137,4 +137,41 @@ class AdminController extends Controller
        $allUsers = $adminModel->getAllUserData();
        return $this->render('allUsers', ['allUsers' => $allUsers]);
    }
+
+   public function deleteUser(Request $request)
+   {
+       $userId = (int)$request->getRouteParams()['id'] ?? null;
+       $user = new User();
+       $userPic = new UserPic();
+       $todo = new Todo();
+       $taskFile = new TaskFile();
+       $userData = $user->getUserDataById($userId);
+       $userPicId = $userData['files_id'];
+       if ($userPicId !== null){
+           $fileToUpdate = $userPic->findFileById($userData['files_id']);
+           $fileToUpdateName = $fileToUpdate['files_name'];
+           $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
+           if (file_exists($filePathToUpdate)) {
+               unlink($filePathToUpdate);
+           }
+           $userPic->deleteFileById($userData['files_id']);
+       }
+       $allTasks = $todo->getAllByUserId($userId);
+       foreach ($allTasks as $task) {
+           if ($task['task_files_id'] !== null) {
+               $fileToDelete = $taskFile->findFileById($task['task_files_id']);
+               $fileToDeleteName = $fileToDelete['files_name'];
+               $filePathToDelete = __DIR__ . '/../img/taskFiles/' . $fileToDeleteName;
+               if (file_exists($filePathToDelete)) {
+                   unlink($filePathToDelete);
+               }
+               $taskFile->deleteFileById($task['task_files_id']);
+           }
+       }
+
+       $user->deleteUserById($userId);
+       $adminModel = new Admin();
+       $allUsers = $adminModel->getAllUserData();
+       return $this->render('allUsers', ['allUsers' => $allUsers]);
+   }
 }

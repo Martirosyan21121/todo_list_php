@@ -23,7 +23,12 @@
     <h1>All Users</h1>
 
     <nav class="top-bar">
-        <a href="/adminPage/" class="add-task-button" style="margin-left: 50px">Back</a>
+        <?php
+        if (isset($_SESSION['user'])) {
+            $adminId = $_SESSION['user']['id'];
+            echo "<a class='add-task-button' style='margin-left: 20px;' href='/adminPage/$adminId'>Back</a>";
+        }
+        ?>
     </nav>
 
     <table>
@@ -41,6 +46,7 @@
         <?php
         if (!empty($allUsers)){
         foreach ($allUsers as $user){
+
             ?>
 
 
@@ -53,7 +59,7 @@
                 <button class="add-task-button"> All Tasks</button>
             <td>
                 <button class="download-file-button"> Edit</button>
-            <td><a href="../router/Router.php?url=/delete?id=<?= $user['id'] ?>" class="delete-task-button">Delete</a>
+            <td><a href="/admin/showAllUsers/delete/<?= $user['id'] ?>" class="delete-task-button">Delete</a>
             </td>
 
             <td>
@@ -86,7 +92,3 @@
 </div>
 </body>
 </html>
-
-<!--<form action="../controller/AdminController.php?delId=--><?php //= $user['id']?><!--" method="post">-->
-<!--    <button class="delete-task-button" type="submit"> Delete </button>-->
-<!--</form>-->
