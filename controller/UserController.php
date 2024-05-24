@@ -216,7 +216,7 @@ class UserController extends Controller
             if (!empty($errors)) {
                 return $this->render('updateUser', ['errors' => $errors, 'user' => $user]);
             }
-
+            $file_Id = $user['files_id'];
             if (isset($_FILES['user_image']) && $_FILES['user_image']['error'] === UPLOAD_ERR_OK) {
                 $image_tmp_name = $_FILES['user_image']['tmp_name'];
                 $randomNumber = rand(1000, 1000000);
@@ -245,6 +245,12 @@ class UserController extends Controller
                 $fileId = $file['id'];
                 $_SESSION['pic_path'] = '/img/userPic/' . $image_name;
 
+            } else if (!empty($file_Id)) {
+                $pick = $userPic->findFileById($file_Id);
+                $pickName = $pick['files_name'];
+                $_SESSION['pic_path'] = '/img/userPick/' . $pickName;
+                $userModel->updateUser($userId, $username, $email, $file_Id);
+                header('Location: /singlePage/' . $userId);
             } else {
                 $_SESSION['pic_path'] = null;
                 $fileId = null;
@@ -257,30 +263,31 @@ class UserController extends Controller
         $fileToUpdate = $userPic->findFileById($fileToUpdateId);
         $fileToUpdateName = $fileToUpdate['files_name'];
 
-        if ($fileId === null) {
-            $fileToUpdateId = $userData['files_id'];
-            if ($fileToUpdateId !== null && $fileToUpdateId !== $fileId) {
-                if ($fileToUpdate !== null) {
-                    $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
-                    if (file_exists($filePathToUpdate)) {
-                        unlink($filePathToUpdate);
-                    }
-                }
-            }
-            if ($fileToUpdateId !== null) {
-                $userPic->deleteFileById($fileToUpdateId);
-            }
-        }
+//        if ($fileId === null) {
+//            $fileToUpdateId = $userData['files_id'];
+//            if ($fileToUpdateId !== null && $fileToUpdateId !== $fileId) {
+//                if ($fileToUpdate !== null) {
+//                    $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
+//                    if (file_exists($filePathToUpdate)) {
+//                        unlink($filePathToUpdate);
+//                    }
+//                }
+//            }
+//            if ($fileToUpdateId !== null) {
+//                $userPic->deleteFileById($fileToUpdateId);
+//            }
+//        }
 
-        if (!empty($fileId)) {
-            if ($fileToUpdateId !== null) {
-                $userPic->deleteFileById($fileToUpdateId);
-                $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
-                if (file_exists($filePathToUpdate)) {
-                    unlink($filePathToUpdate);
-                }
-            }
-        }
+//        if (!empty($fileId)) {
+//            if ($fileToUpdateId !== null) {
+//                $userPic->deleteFileById($fileToUpdateId);
+//                $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
+//                if (file_exists($filePathToUpdate)) {
+//                    unlink($filePathToUpdate);
+//                }
+//            }
+//        }
+
 
         $updateResult = $userModel->updateUser($userId, $username, $email, $fileId);
         if ($updateResult) {

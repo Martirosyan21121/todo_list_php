@@ -319,7 +319,7 @@ class AdminController extends Controller
         $userId = (int)$request->getRouteParams()['id'] ?? null;
         $taskModel = new Todo();
         $tasks = $taskModel->getAllByUserId($userId);
-        return $this->render('userAllTasksForAdmin', ['tasks' => $tasks]);
+        return $this->render('userAllTasksForAdmin', ['tasks' => $tasks, 'userId' => $userId]);
     }
 
     public function deleteTaskByAdmin(Request $request)
@@ -514,7 +514,6 @@ class AdminController extends Controller
                 }
             }
         }
-
 
         $updateResult = $taskModel->updateText($taskId, $text, $dateTime, $fileId);
         if ($updateResult) {

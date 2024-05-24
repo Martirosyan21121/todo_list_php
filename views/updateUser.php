@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="">
 <head>
@@ -30,36 +29,37 @@
             $user_id = $user_data['id'];
             $username = $user_data['username'];
             $email = $user_data['email'];
+            $fileId = $user_data['files_id'];
             ?>
             <form action="/user/update/<?= $user_id ?>" method="post" enctype="multipart/form-data">
 
-                    <input class="text" type="text" name="username" placeholder="Username"
-                           value="<?php echo $username ?>" required="">
+                <input class="text" type="text" name="username" placeholder="Username"
+                       value="<?php echo $username ?>" required="">
 
-                    <?php if (!empty($errors['username_length'])) { ?>
-                        <p style="color: red; margin-top: 10px"><?php echo $errors['username_length']; ?></p>
-                    <?php } ?>
+                <?php if (!empty($errors['username_length'])) { ?>
+                    <p style="color: red; margin-top: 10px"><?php echo $errors['username_length']; ?></p>
+                <?php } ?>
 
-                    <input class="text email" type="email" name="email" placeholder="Email" value="<?php echo $email ?>"
-                           required="">
-                    <?php if (!empty($errors['email_format'])) { ?>
-                        <p style="color: red; margin-top: -10px"><?php echo $errors['email_format']; ?></p>
-                    <?php } ?>
+                <input class="text email" type="email" name="email" placeholder="Email" value="<?php echo $email ?>"
+                       required="">
+                <?php if (!empty($errors['email_format'])) { ?>
+                    <p style="color: red; margin-top: -10px"><?php echo $errors['email_format']; ?></p>
+                <?php } ?>
 
-                    <div class="file-input-container">
-                        <label for="file-input" class="custom-file-upload">
-                            Choose Picture
-                        </label>
-                        <input id="file-input" type="file"  name="user_image" onchange="updateUserPic(this)"
-                        value="">
-                        <span id="file-name"></span>
-                    </div>
+                <div class="file-input-container">
+                    <label for="file-input" class="custom-file-upload">
+                        Choose Picture
+                    </label>
+                    <input id="file-input" type="file" name="user_image"
+                           value="">
+                    <span id="file-name"></span>
+                </div>
 
-                    <?php if (!empty($errors['invalid_file_extension'])) { ?>
-                        <p style="color: red; margin-top: 10px"><?php echo $errors['invalid_file_extension']; ?></p>
-                    <?php } ?>
+                <?php if (!empty($errors['invalid_file_extension'])) { ?>
+                    <p style="color: red; margin-top: 10px"><?php echo $errors['invalid_file_extension']; ?></p>
+                <?php } ?>
 
-                    <?php
+                <?php
                 }
                 ?>
                 <input type="submit" value="UPDATE">
@@ -85,15 +85,6 @@
         <li></li>
     </ul>
 </div>
-<script>
-    function updateUserPic(input) {
-        let fileName = '';
-        if (input.files.length > 0) {
-            fileName = input.files[0].name;
-        }
-        let fileNameSpan = document.getElementById('file-name');
-        fileNameSpan.textContent = fileName;
-    }
-</script>
+
 </body>
 </html>

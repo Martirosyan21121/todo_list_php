@@ -42,7 +42,6 @@ ob_start();
                 $itemId = $row['id'];
                 $createdAt = $row['created_at'];
                 $file_id = $row['task_files_id'];
-                $userId = $row['user_id'];
                 $file = $taskFile->findFileById($file_id);
 
                 switch ($row['status']) {
