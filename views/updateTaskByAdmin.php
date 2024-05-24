@@ -1,8 +1,15 @@
+<?php
+
+use model\TaskFile;
+
+require_once __DIR__ . '/../model/TaskFile.php';
+
+?>
 
 <!DOCTYPE html>
 <html lang="">
 <head>
-    <title>Add task page</title>
+    <title>Update Task by Admin</title>
     <link rel="icon" href="/img/logo/logo.jpg" type="image/gif" sizes="any">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -18,15 +25,24 @@
 </head>
 <body>
 <div class="main-w3layouts wrapper">
-    <h1>Add task by Admin</h1>
+    <h1>Update Task by Admin</h1>
 
     <div class="main-agileinfo">
         <div class="agileits-top">
-            <form action="/admin/showAllUsers/allTasks/addTask/<?= $id?>" method="post" enctype="multipart/form-data">
-                <input class="text" type="text" name="text" placeholder="Text" required="">
-                <br>
-                <input type="datetime-local" name="dateTime" placeholder="Data time" step="60" required="">
 
+
+            <?php
+            if (isset($task)) {
+            $taskFile = new TaskFile();
+            $id_update = $task['id'];
+            $text = $task['text'];
+            $date_time = $task['date_time'];
+            ?>
+            <form action="/allTasks/update/updateTask/<?= $id_update ?>" method="post" enctype="multipart/form-data">
+                <input class="text" type="text" name="text" placeholder="Text" value="<?php echo $text ?>" required="">
+                <br>
+                <input type="datetime-local" name="dateTime" value="<?php echo $date_time ?>" placeholder="Data time"
+                       required="">
                 <span style="color: red; margin-left: 10px">Deadline</span>
                 <?php if (!empty($errors['invalid_date_time'])) { ?>
                     <p style="color: red; margin-top: 10px"><?php echo $errors['invalid_date_time']; ?></p>
@@ -36,17 +52,21 @@
                     <label for="file-input" class="custom-file-upload">
                         Choose file
                     </label>
-                    <input id="file-input" type="file" name="task_file" onchange="fileName(this)">
+                    <input id="file-input" type="file" name="task_file" onchange="fileNameUpdate(this)">
                     <span id="file-name"></span>
                 </div>
 
-                <input type="submit" value="ADD TASK">
+                <?php
+                }
+                ?>
+
+                <input type="submit" name="update" value="UPDATE TASK">
             </form>
         </div>
     </div>
 
     <div class="container">
-        <a href="/admin/showAllUsers/allTasks/<?= $id ?>" class="add-task-button">
+        <a href="/allTasks/<?= $userId ?>" class="add-task-button">
             Back
         </a>
     </div>
@@ -68,7 +88,7 @@
     </ul>
 </div>
 <script>
-    function fileName(input) {
+    function fileNameUpdate(input) {
         let fileName = '';
         if (input.files.length > 0) {
             fileName = input.files[0].name;

@@ -42,7 +42,7 @@ ob_start();
                 $itemId = $row['id'];
                 $createdAt = $row['created_at'];
                 $file_id = $row['task_files_id'];
-
+                $userId = $row['user_id'];
                 $file = $taskFile->findFileById($file_id);
 
                 switch ($row['status']) {
@@ -85,7 +85,7 @@ ob_start();
                             Delete
                         </a>
 
-                        <a style='margin-left: 40px;' href="/allTasks/update/<?= $itemId ?>" class='add-task-button'>
+                        <a style='margin-left: 40px;' href="/admin/showAllUsers/allTasks/updatePage/<?= $itemId ?>" class='add-task-button'>
                             Update
                         </a>
 
@@ -147,15 +147,11 @@ ob_start();
         ?>
     </div>
     <br>
-
     <div class="container">
-        <?php
-        if (isset($_SESSION['user'])) {
-            $userId = $_SESSION['user']['id'];
-            echo "<a class='add-task-button' style='margin-left: 50px;' href='/allTasks/addTask/$userId'>Add tasks</a>";
-        }
-        ?>
+        <a class='add-task-button' style='margin-left: 50px;' href='/admin/showAllUsers/allTasks/addTaskPage/<?= $userId ?>'>Add
+            tasks</a>
     </div>
+
 
     <div class="colorlibcopy-agile">
         <p>© 2024 project ToDo list using PHP</p>
