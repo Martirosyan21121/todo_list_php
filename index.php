@@ -52,17 +52,15 @@ $app->router->get('/admin/showAllUsers/deactivate/{id}', [AdminController::class
 $app->router->get('/admin/showAllUsers/allDeactivates/delete/{id}', [AdminController::class, 'deleteUser']);
 $app->router->get('/admin/showAllUsers/allDeactivates/activate/{id}', [AdminController::class, 'activateUser']);
 $app->router->get('/admin/showAllUsers/allTasks/{id}', [AdminController::class, 'allTasks']);
+$app->router->get('/admin/showAllUsers/allTasks/delete/{id}', [AdminController::class, 'deleteTaskByAdmin']);
 $app->router->get('/admin/showAllUsers/allTasks/addTaskPage/{id}', [AdminController::class, 'addTaskPage']);
-$app->router->get('/admin/showAllUsers/allTasks/updatePage/{id}', [AdminController::class, 'updateTaskPage']);
-
-
 $app->router->get('/admin/showAllUsers/edit/{id}', [AdminController::class, 'editUserPage']);
+$app->router->get('/admin/showAllUsers/allTasks/updatePage/{id}', [AdminController::class, 'updateTaskPage']);
 
 $app->router->post('/admin/updateData/{id}', [AdminController::class, 'updateAdmin']);
 $app->router->post('/admin/showAllUsers/edit/update/{id}', [AdminController::class, 'updateUserByAdmin']);
+$app->router->post('/admin/showAllUsers/allTasks/updatePage/update/{id}', [AdminController::class, 'updateTask']);
 $app->router->post('/admin/showAllUsers/allTasks/addTask/{id}', [AdminController::class, 'addTask']);
-
-$app->router->post('', [AdminController::class, '']);
 
 $app->router->get('/logout', [UserController::class, 'logout']);
 

@@ -88,7 +88,7 @@ ob_start();
                             Delete
                         </a>
 
-                        <a style='margin-left: 40px;' href="/allTasks/update/<?= $itemId ?>" class='add-task-button'>
+                        <a style='margin-left: 70px;' href="/allTasks/update/<?= $itemId ?>" class='add-task-button'>
                             Update
                         </a>
 

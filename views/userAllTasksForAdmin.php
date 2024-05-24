@@ -80,12 +80,12 @@ ob_start();
                     <div class='item-title' style='max-width: 500px; margin: 10px'><?php echo $text; ?></div>
                     <br>
                     <div style="margin-top: 120px">
-                        <a style='margin-left: 20px;' href="/allTasks/deleteTask/<?= $itemId ?>"
+                        <a style='margin-left: 20px;' href="/admin/showAllUsers/allTasks/delete/<?= $itemId ?>"
                            class='delete-task-button'>
                             Delete
                         </a>
 
-                        <a style='margin-left: 40px;' href="/admin/showAllUsers/allTasks/updatePage/<?= $itemId ?>" class='add-task-button'>
+                        <a style='margin-left: 70px;' href="/admin/showAllUsers/allTasks/updatePage/<?= $itemId ?>" class='add-task-button'>
                             Update
                         </a>
 

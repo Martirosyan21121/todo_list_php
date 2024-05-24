@@ -153,7 +153,7 @@ class User extends DBConnection
         session_unset();
 
         session_destroy();
-
+        var_dump($_SESSION);
         header('Location: /');
         exit();
     }

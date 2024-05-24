@@ -37,8 +37,9 @@ require_once __DIR__ . '/../model/TaskFile.php';
             $id_update = $task['id'];
             $text = $task['text'];
             $date_time = $task['date_time'];
+            $userId = $task['user_id']
             ?>
-            <form action="/allTasks/update/updateTask/<?= $id_update ?>" method="post" enctype="multipart/form-data">
+            <form action="/admin/showAllUsers/allTasks/updatePage/update/<?= $id_update ?>" method="post" enctype="multipart/form-data">
                 <input class="text" type="text" name="text" placeholder="Text" value="<?php echo $text ?>" required="">
                 <br>
                 <input type="datetime-local" name="dateTime" value="<?php echo $date_time ?>" placeholder="Data time"
@@ -66,7 +67,7 @@ require_once __DIR__ . '/../model/TaskFile.php';
     </div>
 
     <div class="container">
-        <a href="/allTasks/<?= $userId ?>" class="add-task-button">
+        <a href="/admin/showAllUsers/allTasks/<?= $userId ?>" class="add-task-button">
             Back
         </a>
     </div>

@@ -322,7 +322,35 @@ class AdminController extends Controller
         return $this->render('userAllTasksForAdmin', ['tasks' => $tasks]);
     }
 
+    public function deleteTaskByAdmin(Request $request)
+    {
+        $taskId = (int)$request->getRouteParams()['id'] ?? null;
+        $deleted_directory = __DIR__ . '/../img/taskFiles/';
 
+        $taskModel = new Todo();
+        $taskFile = new TaskFile();
+
+        $task = $taskModel->findTaskById($taskId);
+        $userId = $task['user_id'];
+        $fileId = $task['task_files_id'];
+        $file = $taskFile->findFileById($fileId);
+        $deleteFileName = $file['files_name'];
+
+        if ($file !== null) {
+            $filePathToUpdate = $deleted_directory . $deleteFileName;
+            if (file_exists($filePathToUpdate)) {
+                unlink($filePathToUpdate);
+            }
+        }
+
+        $taskFile->deleteFileById($fileId);
+        $deleteResult = $taskModel->deleteById($taskId);
+        if ($deleteResult) {
+            header('Location: /admin/showAllUsers/allTasks/' . $userId);
+        }
+        $tasks = $taskModel->getAllByUserId($userId);
+        return $this->render('userAllTasksForAdmin', ['tasks' => $tasks]);
+    }
     public function addTaskPage(Request $request)
     {
         $userId = (int)$request->getRouteParams()['id'] ?? null;
@@ -444,7 +472,7 @@ class AdminController extends Controller
                 $inputDateTime = new DateTime($dateTime);
             } catch (Exception $e) {
                 $errors['invalid_date_time'] = "Invalid date and time format.";
-                return $this->render('updateTask', ['errors' => $errors, 'userId' => $userId, 'task' => $taskData]);
+                return $this->render('updateTaskByAdmin', ['errors' => $errors, 'userId' => $userId, 'task' => $taskData]);
             }
 
             if ($inputDateTime < $currentDateTime) {
@@ -452,7 +480,7 @@ class AdminController extends Controller
             }
 
             if (!empty($errors)) {
-                return $this->render('updateTask', ['errors' => $errors, 'userId' => $userId, 'task' => $taskData]);
+                return $this->render('updateTaskByAdmin', ['errors' => $errors, 'userId' => $userId, 'task' => $taskData]);
             }
         }
 
@@ -491,10 +519,10 @@ class AdminController extends Controller
         $updateResult = $taskModel->updateText($taskId, $text, $dateTime, $fileId);
         if ($updateResult) {
             $userId = $taskData['user_id'];
-            header('Location: /allTasks/' . $userId);
+            header('Location: /admin/showAllUsers/allTasks/' . $userId);
         } else {
-            header('Location: /allTasks/update/' . $taskId);
+            header('Location: /admin/showAllUsers/allTasks/updatePage/' . $taskId);
         }
-        return $this->render('allTasks', ['tasks' => $taskData]);
+        return $this->render('userAllTasksForAdmin', ['tasks' => $taskData]);
     }
 }
