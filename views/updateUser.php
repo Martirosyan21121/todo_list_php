@@ -30,7 +30,6 @@
             $user_id = $user_data['id'];
             $username = $user_data['username'];
             $email = $user_data['email'];
-            $imageName = $user_data['files_id'];
             ?>
             <form action="/user/update/<?= $user_id ?>" method="post" enctype="multipart/form-data">
 
@@ -51,7 +50,8 @@
                         <label for="file-input" class="custom-file-upload">
                             Choose Picture
                         </label>
-                        <input id="file-input" type="file"  name="user_image" onchange="updateUserPic(this)">
+                        <input id="file-input" type="file"  name="user_image" onchange="updateUserPic(this)"
+                        value="">
                         <span id="file-name"></span>
                     </div>
 

@@ -127,6 +127,14 @@ class User extends DBConnection
         }
     }
 
+
+    public function userRegisterData($user)
+    {
+        $_SESSION['user'] = $user;
+        $_SESSION['pic_path'] = null;
+        header("Location: /singlePage/" . $user['id']);
+    }
+
     public function updateUser($id, $username, $email, $fileId)
     {
         $stmt = $this->connection->prepare("UPDATE todo.user SET username = ?, email = ?, files_id = ? WHERE id = ?");

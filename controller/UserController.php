@@ -34,6 +34,11 @@ class UserController extends Controller
         $userModel->logout();
     }
 
+    public function singlePageShow()
+    {
+        return $this->render('singlePage');
+    }
+
     public function singlePage(Request $request)
     {
         $userId = (int)$request->getRouteParams()['id'] ?? null;
@@ -60,8 +65,7 @@ class UserController extends Controller
         $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
         $_SESSION['status3'] = $statusCount;
 
-
-        return $this->render('singlePage',  ['user' => $user]);
+        return $this->render('singlePage', ['user' => $user]);
     }
 
     public function login()
@@ -98,9 +102,9 @@ class UserController extends Controller
 
                     $upload_directory = '../img/userPic/';
                     $uploaded_image_path = $upload_directory . $image_name;
-                    $userPic->userPicPath($uploaded_image_path);
+                    $userPic->userPicPath($uploaded_image_path, $email);
                 } else {
-                    $userPic->userPicPath(null);
+                    $userPic->userPicPath(null, $email);
                 }
                 $user1 = $userModel->findUserByEmail($email);
                 $userId = $user1['id'];
@@ -168,7 +172,8 @@ class UserController extends Controller
             $registrationResult = $userModel->register($username, $email, $password);
             if ($registrationResult) {
                 $userData = $userModel->findUserByEmail($email);
-                $userModel->userData($userData);
+                $userModel->userRegisterData($userData);
+
             } else {
                 header('Location: /register');
             }
@@ -246,43 +251,43 @@ class UserController extends Controller
             }
         }
 
-            $userData = $userModel->findUserById($userId);
+        $userData = $userModel->findUserById($userId);
+        $fileToUpdateId = $userData['files_id'];
+
+        $fileToUpdate = $userPic->findFileById($fileToUpdateId);
+        $fileToUpdateName = $fileToUpdate['files_name'];
+
+        if ($fileId === null) {
             $fileToUpdateId = $userData['files_id'];
-
-            $fileToUpdate = $userPic->findFileById($fileToUpdateId);
-            $fileToUpdateName = $fileToUpdate['files_name'];
-
-            if ($fileId === null) {
-                $fileToUpdateId = $userData['files_id'];
-                if ($fileToUpdateId !== null && $fileToUpdateId !== $fileId) {
-                    if ($fileToUpdate !== null) {
-                        $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
-                        if (file_exists($filePathToUpdate)) {
-                            unlink($filePathToUpdate);
-                        }
-                    }
-                }
-                if ($fileToUpdateId !== null) {
-                    $userPic->deleteFileById($fileToUpdateId);
-                }
-            }
-
-            if (!empty($fileId)) {
-                if ($fileToUpdateId !== null) {
-                    $userPic->deleteFileById($fileToUpdateId);
+            if ($fileToUpdateId !== null && $fileToUpdateId !== $fileId) {
+                if ($fileToUpdate !== null) {
                     $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
                     if (file_exists($filePathToUpdate)) {
                         unlink($filePathToUpdate);
                     }
                 }
             }
-
-            $updateResult = $userModel->updateUser($userId, $username, $email, $fileId);
-            if ($updateResult) {
-                header('Location: /singlePage/' . $userId);
-            } else {
-                header('Location: /user/update/' . $userId);
+            if ($fileToUpdateId !== null) {
+                $userPic->deleteFileById($fileToUpdateId);
             }
-            return $this->render('singlePage', ['user' => $userId]);
+        }
+
+        if (!empty($fileId)) {
+            if ($fileToUpdateId !== null) {
+                $userPic->deleteFileById($fileToUpdateId);
+                $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
+                if (file_exists($filePathToUpdate)) {
+                    unlink($filePathToUpdate);
+                }
+            }
+        }
+
+        $updateResult = $userModel->updateUser($userId, $username, $email, $fileId);
+        if ($updateResult) {
+            header('Location: /singlePage/' . $userId);
+        } else {
+            header('Location: /user/update/' . $userId);
+        }
+        return $this->render('singlePage', ['user' => $userId]);
     }
 }

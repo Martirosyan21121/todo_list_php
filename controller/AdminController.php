@@ -27,6 +27,11 @@ class AdminController extends Controller
         return $this->render('adminSinglePage', ['admin' => $admin]);
     }
 
+    public function adminSinglePageShow()
+    {
+        return $this->render('adminSinglePage');
+    }
+
     public function showAdminUpdateForm(Request $request)
     {
         $adminId = (int)$request->getRouteParams()['id'] ?? null;
@@ -305,5 +310,20 @@ class AdminController extends Controller
             header('Location: /admin/updateData/' . $userId);
         }
         return $this->render('allUsers');
+    }
+
+    public function allTasks(Request $request)
+    {
+        $userId = (int)$request->getRouteParams()['id'] ?? null;
+        $taskModel = new Todo();
+        $tasks = $taskModel->getAllByUserId($userId);
+        return $this->render('userAllTasksForAdmin', ['tasks' => $tasks]);
+    }
+
+
+    public function addTaskPage(Request $request)
+    {
+        $userId = (int)$request->getRouteParams()['id'] ?? null;
+        return $this->render('userAllTasksForAdmin', ['id' => $userId]);
     }
 }

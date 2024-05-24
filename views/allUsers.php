@@ -56,7 +56,9 @@
             <td> <?= $user['username'] ?>
             <td> <?= $user['email'] ?>
             <td>
-                <button class="add-task-button"> All Tasks</button>
+                <form action="/admin/showAllUsers/allTasks/<?= $user['id'] ?>" method="get">
+                    <button class="add-task-button"> All Tasks</button>
+                </form>
             <td>
                 <form action="/admin/showAllUsers/edit/<?= $user['id'] ?>" method="get">
                     <button class="download-file-button"> Edit</button>
