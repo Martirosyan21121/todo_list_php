@@ -26,6 +26,9 @@ class AdminController extends Controller
         $adminId = (int)$request->getRouteParams()['id'] ?? null;
         $adminModel = new Admin();
         $admin = $adminModel->findAdminById($adminId);
+        if (empty($admin['files_id'])){
+            $_SESSION['admin_pic_path'] = null;
+        }
         return $this->render('adminSinglePage', ['admin' => $admin]);
     }
 
@@ -38,7 +41,36 @@ class AdminController extends Controller
     {
         $adminId = (int)$request->getRouteParams()['id'] ?? null;
         $adminModel = new Admin();
+        $userPic = new UserPic();
         $admin = $adminModel->findAdminById($adminId);
+
+        $adminImage = $userPic->findFileById($admin['files_id']);
+        if (!empty($adminImage)){
+            $picName = $adminImage['files_name'];
+            $showName = substr($picName, -4);
+            return $this->render('updateAdmin', ['admin' => $admin, 'picName' => $showName]);
+        }
+        return $this->render('updateAdmin', ['admin' => $admin]);
+    }
+
+    public function deleteAdminPic(Request $request)
+    {
+        $adminId = (int)$request->getRouteParams()['id'] ?? null;
+        $adminModel = new Admin();
+        $adminPicModel = new UserPic();
+        $admin = $adminModel->findAdminById($adminId);
+        $adminImage = $adminPicModel->findFileById($admin['files_id']);
+
+        $fileToDeleteName = $adminImage['files_name'];
+        $fileToDelete = $admin['files_id'];
+        if ($fileToDelete) {
+            $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToDeleteName;
+            if (file_exists($filePathToUpdate)) {
+                unlink($filePathToUpdate);
+            }
+        }
+
+        $adminPicModel->deleteFileById($admin['files_id']);
         return $this->render('updateAdmin', ['admin' => $admin]);
     }
 
@@ -53,6 +85,13 @@ class AdminController extends Controller
 
             $errors = [];
             $admin = $adminModel->findAdminById($adminId);
+            $adminImage = $adminPic->findFileById($admin['files_id']);
+            $picName = '';
+            if (!empty($adminImage)){
+                $picName = $adminImage['files_name'];
+            }
+            $showName = substr($picName, -4);
+
             if (strlen($username) < 5 || strlen($username) > 20) {
                 $errors['username_length'] = "Username must be between 5 and 20 characters.";
             }
@@ -62,8 +101,9 @@ class AdminController extends Controller
             }
 
             if (!empty($errors)) {
-                return $this->render('updateAdmin', ['errors' => $errors, 'admin' => $admin]);
+                return $this->render('updateAdmin', ['errors' => $errors, 'admin' => $admin, 'picName' => $showName]);
             }
+            $file_Id = $admin['files_id'];
 
             if (isset($_FILES['admin_image']) && $_FILES['admin_image']['error'] === UPLOAD_ERR_OK) {
                 $image_tmp_name = $_FILES['admin_image']['tmp_name'];
@@ -94,6 +134,18 @@ class AdminController extends Controller
                 $file = $adminPic->findFileByName($image_name);
                 $fileId = $file['id'];
                 $_SESSION['admin_pic_path'] = '/img/userPic/' . $image_name;
+
+            } else if (!empty($file_Id)) {
+                $adminImage = $adminPic->findFileById($file_Id);
+                $adminPicName = $adminImage['files_name'];
+                $_SESSION['admin_pic_path'] = '/img/userPic/' . $adminPicName;
+                $updateResult = $adminModel->updateAdmin($adminId, $username, $email, $file_Id);
+                if ($updateResult) {
+                    header('Location: /adminPage/' . $adminId);
+                } else {
+                    header('Location: /admin/update/' . $adminId);
+                }
+                return $this->render('adminSinglePage', ['admin' => $adminId]);
             } else {
                 $_SESSION['admin_pic_path'] = null;
                 $fileId = null;
@@ -106,21 +158,6 @@ class AdminController extends Controller
         $fileToUpdate = $adminPic->findFileById($fileToUpdateId);
         $fileToUpdateName = $fileToUpdate['files_name'];
 
-        if ($fileId === null) {
-            $fileToUpdateId = $adminData['files_id'];
-            if ($fileToUpdateId !== null && $fileToUpdateId !== $fileId) {
-                if ($fileToUpdate !== null) {
-                    $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
-                    if (file_exists($filePathToUpdate)) {
-                        unlink($filePathToUpdate);
-                    }
-                }
-            }
-            if ($fileToUpdateId !== null) {
-                $adminPic->deleteFileById($fileToUpdateId);
-            }
-        }
-
         if (!empty($fileId)) {
             if ($fileToUpdateId !== null) {
                 $adminPic->deleteFileById($fileToUpdateId);
@@ -130,6 +167,7 @@ class AdminController extends Controller
                 }
             }
         }
+
         $updateResult = $adminModel->updateAdmin($adminId, $username, $email, $fileId);
         if ($updateResult) {
             header('Location: /adminPage/' . $adminId);
@@ -212,7 +250,35 @@ class AdminController extends Controller
     {
         $userId = (int)$request->getRouteParams()['id'] ?? null;
         $userModel = new User();
+        $userPic = new UserPic();
+
         $user = $userModel->findUserById($userId);
+        $userImage = $userPic->findFileById($user['files_id']);
+        if (!empty($userImage)) {
+            $picName = $userImage['files_name'];
+            $showName = substr($picName, -4);
+            return $this->render('editUser', ['user' => $user, 'picName' => $showName]);
+        }
+        return $this->render('editUser', ['user' => $user]);
+    }
+
+    public function deleteUserPicByAdmin(Request $request)
+    {
+        $userId = (int)$request->getRouteParams()['id'] ?? null;
+        $userPicModel = new UserPic();
+        $userModel = new User();
+        $user = $userModel->findUserById($userId);
+        $userImage = $userPicModel->findFileById($user['files_id']);
+        $fileToDeleteName = $userImage['files_name'];
+        $fileToDelete = $user['files_id'];
+        if ($fileToDelete) {
+            $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToDeleteName;
+            if (file_exists($filePathToUpdate)) {
+                unlink($filePathToUpdate);
+            }
+        }
+
+        $userPicModel->deleteFileById($user['files_id']);
         return $this->render('editUser', ['user' => $user]);
     }
 

@@ -64,8 +64,10 @@ class UserController extends Controller
         $status = 3;
         $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
         $_SESSION['status3'] = $statusCount;
-
-        return $this->render('singlePage', ['user' => $user]);
+        if (empty($user['files_id'])){
+            $_SESSION['pic_path'] = null;
+        }
+            return $this->render('singlePage', ['user' => $user]);
     }
 
     public function login()
@@ -187,7 +189,36 @@ class UserController extends Controller
     {
         $userId = (int)$request->getRouteParams()['id'] ?? null;
         $userModel = new User();
+        $userPic = new UserPic();
+
         $user = $userModel->findUserById($userId);
+        $userImage = $userPic->findFileById($user['files_id']);
+        if (!empty($userImage)) {
+            $picName = $userImage['files_name'];
+            $showName = substr($picName, -4);
+            return $this->render('updateUser', ['user' => $user, 'picName' => $showName]);
+        }
+        return $this->render('updateUser', ['user' => $user]);
+    }
+
+    public function deletePic(Request $request)
+    {
+        $userId = (int)$request->getRouteParams()['id'] ?? null;
+        $userPicModel = new UserPic();
+        $userModel = new User();
+        $user = $userModel->findUserById($userId);
+        $userImage = $userPicModel->findFileById($user['files_id']);
+
+        $fileToDeleteName = $userImage['files_name'];
+        $fileToDelete = $user['files_id'];
+        if ($fileToDelete) {
+            $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToDeleteName;
+            if (file_exists($filePathToUpdate)) {
+                unlink($filePathToUpdate);
+            }
+        }
+
+        $userPicModel->deleteFileById($user['files_id']);
         return $this->render('updateUser', ['user' => $user]);
     }
 
@@ -204,6 +235,12 @@ class UserController extends Controller
 
             $errors = [];
             $user = $userModel->findUserById($userId);
+            $userImage = $userPic->findFileById($user['files_id']);
+            $picName = '';
+            if (!empty($userImage)) {
+                $picName = $userImage['files_name'];
+            }
+            $showName = substr($picName, -4);
 
             if (strlen($username) < 5 || strlen($username) > 20) {
                 $errors['username_length'] = "Username must be between 5 and 20 characters.";
@@ -214,7 +251,7 @@ class UserController extends Controller
             }
 
             if (!empty($errors)) {
-                return $this->render('updateUser', ['errors' => $errors, 'user' => $user]);
+                return $this->render('updateUser', ['errors' => $errors, 'user' => $user, 'picName' => $showName]);
             }
             $file_Id = $user['files_id'];
             if (isset($_FILES['user_image']) && $_FILES['user_image']['error'] === UPLOAD_ERR_OK) {
@@ -246,11 +283,16 @@ class UserController extends Controller
                 $_SESSION['pic_path'] = '/img/userPic/' . $image_name;
 
             } else if (!empty($file_Id)) {
-                $pick = $userPic->findFileById($file_Id);
-                $pickName = $pick['files_name'];
-                $_SESSION['pic_path'] = '/img/userPick/' . $pickName;
-                $userModel->updateUser($userId, $username, $email, $file_Id);
-                header('Location: /singlePage/' . $userId);
+                $userImage = $userPic->findFileById($file_Id);
+                $userPicName = $userImage['files_name'];
+                $_SESSION['pic_path'] = '/img/userPic/' . $userPicName;
+                $updateResult = $userModel->updateUser($userId, $username, $email, $file_Id);
+                if ($updateResult) {
+                    header('Location: /singlePage/' . $userId);
+                } else {
+                    header('Location: /user/update/' . $userId);
+                }
+                return $this->render('singlePage', ['user' => $userId]);
             } else {
                 $_SESSION['pic_path'] = null;
                 $fileId = null;
@@ -263,30 +305,15 @@ class UserController extends Controller
         $fileToUpdate = $userPic->findFileById($fileToUpdateId);
         $fileToUpdateName = $fileToUpdate['files_name'];
 
-//        if ($fileId === null) {
-//            $fileToUpdateId = $userData['files_id'];
-//            if ($fileToUpdateId !== null && $fileToUpdateId !== $fileId) {
-//                if ($fileToUpdate !== null) {
-//                    $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
-//                    if (file_exists($filePathToUpdate)) {
-//                        unlink($filePathToUpdate);
-//                    }
-//                }
-//            }
-//            if ($fileToUpdateId !== null) {
-//                $userPic->deleteFileById($fileToUpdateId);
-//            }
-//        }
-
-//        if (!empty($fileId)) {
-//            if ($fileToUpdateId !== null) {
-//                $userPic->deleteFileById($fileToUpdateId);
-//                $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
-//                if (file_exists($filePathToUpdate)) {
-//                    unlink($filePathToUpdate);
-//                }
-//            }
-//        }
+        if (!empty($fileId)) {
+            if ($fileToUpdateId !== null) {
+                $userPic->deleteFileById($fileToUpdateId);
+                $filePathToUpdate = __DIR__ . '/../img/userPic/' . $fileToUpdateName;
+                if (file_exists($filePathToUpdate)) {
+                    unlink($filePathToUpdate);
+                }
+            }
+        }
 
 
         $updateResult = $userModel->updateUser($userId, $username, $email, $fileId);
@@ -297,4 +324,6 @@ class UserController extends Controller
         }
         return $this->render('singlePage', ['user' => $userId]);
     }
+
+
 }

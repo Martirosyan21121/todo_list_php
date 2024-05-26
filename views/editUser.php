@@ -52,7 +52,13 @@
                         Choose Picture
                     </label>
                     <input id="file-input" type="file"  name="user_image" onchange="updateUserPic(this)">
-                    <span id="file-name"></span>
+                    <span id="file-name"><?php
+                        if (!empty($picName)) {
+                            echo $picName;
+                            echo " <a class='delete-task-button' style='margin-left: 60px' href='/admin/showAllUsers/edit/deletePic/$user_id'> Delete Image </a>";
+
+                        }
+                        ?></span>
                 </div>
 
                 <?php if (!empty($errors['invalid_file_extension'])) { ?>

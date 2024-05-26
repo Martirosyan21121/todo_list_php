@@ -25,11 +25,9 @@
             <?php
             if (isset($user)) {
             $user_data = $user;
-
             $user_id = $user_data['id'];
             $username = $user_data['username'];
             $email = $user_data['email'];
-            $fileId = $user_data['files_id'];
             ?>
             <form action="/user/update/<?= $user_id ?>" method="post" enctype="multipart/form-data">
 
@@ -50,9 +48,14 @@
                     <label for="file-input" class="custom-file-upload">
                         Choose Picture
                     </label>
-                    <input id="file-input" type="file" name="user_image"
-                           value="">
-                    <span id="file-name"></span>
+                    <input id="file-input" type="file" name="user_image" onchange="updateUserPic(this)">
+                    <span id="file-name"><?php
+                        if (!empty($picName)) {
+                            echo $picName;
+                            echo " <a class='delete-task-button' style='margin-left: 60px' href='/user/deletePic/$user_id'> Delete Image </a>";
+
+                        }
+                        ?></span>
                 </div>
 
                 <?php if (!empty($errors['invalid_file_extension'])) { ?>
@@ -62,6 +65,7 @@
                 <?php
                 }
                 ?>
+
                 <input type="submit" value="UPDATE">
             </form>
 
@@ -85,6 +89,15 @@
         <li></li>
     </ul>
 </div>
-
+<script>
+    function updateUserPic(input) {
+        let fileName = '';
+        if (input.files.length > 0) {
+            fileName = input.files[0].name;
+        }
+        let fileNameSpan = document.getElementById('file-name');
+        fileNameSpan.textContent = fileName;
+    }
+</script>
 </body>
 </html>
