@@ -23,7 +23,7 @@ class Mailer
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            $mail->setFrom('nmartirosyan074@gmail.com', 'Mailer');
+            $mail->setFrom('nmartirosyan074@gmail.com', 'ToDoListPHP');
             $mail->addAddress($to);
 
             $mail->isHTML(true);

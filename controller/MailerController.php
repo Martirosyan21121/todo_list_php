@@ -18,10 +18,14 @@ class MailerController extends Controller
         $userModel = new  User();
         $user = $userModel->findUserById($userId);
 
+        $template = file_get_contents(__DIR__ . '/../views/mailForRegister.html');
+        $body = str_replace(['{{username}}', '{{email}}'], [$user['username'], $user['email']], $template);
+
         $mailer = new Mailer();
         $to = $user['email'];
         $subject = 'From ToDoListProject';
-        $body = '<p>Thanks for register</p>';
         $mailer->sendMail($to, $subject, $body);
+        header("Location: /singlePage/" . $user['id']);
+        return $this->render('singlePage');
     }
 }
