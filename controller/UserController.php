@@ -2,18 +2,24 @@
 
 namespace controller;
 
-use model\AuthMiddleware;
 use model\Todo;
 use model\User;
 use model\UserPic;
+use thecodeholic\phpmvc\Application;
 use thecodeholic\phpmvc\Controller;
+use thecodeholic\phpmvc\middlewares\AuthMiddleware;
 use thecodeholic\phpmvc\Request;
+use thecodeholic\phpmvc\Response;
 
 require_once 'model\User.php';
 require_once 'model\UserPic.php';
 
 class UserController extends Controller
 {
+//    public function __construct()
+//    {
+//        $this->registerMiddleware(new AuthMiddleware(['login']));
+//    }
 
     public function home()
     {
@@ -22,7 +28,9 @@ class UserController extends Controller
 
     public function register()
     {
+//        $this->setLayout('main');
         return $this->render('register');
+
     }
 
     public function deactivate()
@@ -30,10 +38,10 @@ class UserController extends Controller
         return $this->render('accountDeactivate');
     }
 
-    public function logout()
+    public function logout(Request $request, Response $response)
     {
-        $userModel = new User();
-        $userModel->logout();
+        Application::$app->logout();
+        $response->redirect('/');
     }
 
     public function singlePageShow()
@@ -133,12 +141,14 @@ class UserController extends Controller
                 $userModel->userData($userData);
             } else {
                 $errors['login_failed'] = "Invalid email or password.";
+
                 return $this->render('login', ['errors' => $errors]);
             }
             exit();
         } else {
             return $this->render('login');
         }
+
     }
 
     public function registerUser()
@@ -315,7 +325,6 @@ class UserController extends Controller
             }
         }
 
-
         $updateResult = $userModel->updateUser($userId, $username, $email, $fileId);
         if ($updateResult) {
             header('Location: /singlePage/' . $userId);
@@ -324,6 +333,4 @@ class UserController extends Controller
         }
         return $this->render('singlePage', ['user' => $userId]);
     }
-
-
 }
