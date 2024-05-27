@@ -6,7 +6,6 @@ use model\User;
 use controller\UserController;
 use controller\MailerController;
 use thecodeholic\phpmvc\Application;
-use thecodeholic\phpmvc\middlewares\AuthMiddleware;
 
 require_once 'vendor/autoload.php';
 require_once 'controller/UserController.php';
