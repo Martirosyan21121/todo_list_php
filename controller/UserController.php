@@ -16,10 +16,10 @@ require_once 'model\UserPic.php';
 
 class UserController extends Controller
 {
-//    public function __construct()
-//    {
-//        $this->registerMiddleware(new AuthMiddleware(['login']));
-//    }
+    public function __construct()
+    {
+        $this->registerMiddleware(new AuthMiddleware(['login']));
+    }
 
     public function home()
     {
@@ -28,7 +28,7 @@ class UserController extends Controller
 
     public function register()
     {
-//        $this->setLayout('main');
+        $this->setLayout('main');
         return $this->render('register');
 
     }
@@ -87,7 +87,6 @@ class UserController extends Controller
             $taskModel = new Todo();
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
-
             $errors = [];
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -119,6 +118,8 @@ class UserController extends Controller
                 }
                 $user1 = $userModel->findUserByEmail($email);
                 $userId = $user1['id'];
+                Application::$app->user = $user1;
+
                 $count = $taskModel->getTaskCountByUserId($userId);
                 $_SESSION['count'] = $count;
 
@@ -148,7 +149,6 @@ class UserController extends Controller
         } else {
             return $this->render('login');
         }
-
     }
 
     public function registerUser()

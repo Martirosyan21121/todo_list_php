@@ -25,17 +25,20 @@ $config = [
 
 $app = new Application(__DIR__, $config);
 // user
-$app->router->get('/', [UserController::class, 'home']);
-$app->router->get('/register', [UserController::class, 'register']);
-$app->router->get('/deactivate', [UserController::class, 'deactivate']);
-$app->router->get('/singlePage/{id}', [UserController::class, 'singlePage']);
-$app->router->get('/singlePage', [UserController::class, 'singlePageShow']);
-$app->router->get('/user/update/{id}', [UserController::class, 'showUpdateForm']);
-$app->router->get('/user/deletePic/{id}', [UserController::class, 'deletePic']);
+if (!isAdnin){
+    $app->router->get('/', [UserController::class, 'home']);
+    $app->router->get('/register', [UserController::class, 'register']);
+    $app->router->get('/deactivate', [UserController::class, 'deactivate']);
+    $app->router->get('/singlePage/{id}', [UserController::class, 'singlePage']);
+    $app->router->get('/singlePage', [UserController::class, 'singlePageShow']);
+    $app->router->get('/user/update/{id}', [UserController::class, 'showUpdateForm']);
+    $app->router->get('/user/deletePic/{id}', [UserController::class, 'deletePic']);
 
-$app->router->post('/user/update/{id}', [UserController::class, 'updateUser']);
-$app->router->post('/register/user', [UserController::class, 'registerUser']);
-$app->router->post('/login', [UserController::class, 'login']);
+    $app->router->post('/user/update/{id}', [UserController::class, 'updateUser']);
+    $app->router->post('/register/user', [UserController::class, 'registerUser']);
+    $app->router->post('/login', [UserController::class, 'login']);
+}
+
 // gmail
 $app->router->get('/register/gmailSend/{id}', [MailerController::class, 'mailerForRegister']);
 // task
