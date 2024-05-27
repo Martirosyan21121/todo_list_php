@@ -60,6 +60,7 @@ $app->router->get('/admin/showAllUsers/allTasks/addTaskPage/{id}', [AdminControl
 $app->router->get('/admin/showAllUsers/edit/{id}', [AdminController::class, 'editUserPage']);
 $app->router->get('/admin/showAllUsers/edit/deletePic/{id}', [AdminController::class, 'deleteUserPicByAdmin']);
 $app->router->get('/admin/showAllUsers/allTasks/updatePage/{id}', [AdminController::class, 'updateTaskPage']);
+$app->router->get('/admin/showAllUsers/allTasks/updatePage/deleteFile/{id}', [AdminController::class, 'deleteFileByAdmin']);
 
 $app->router->post('/admin/updateData/{id}', [AdminController::class, 'updateAdmin']);
 $app->router->post('/admin/showAllUsers/edit/update/{id}', [AdminController::class, 'updateUserByAdmin']);

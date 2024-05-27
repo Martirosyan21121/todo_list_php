@@ -254,8 +254,6 @@ class TaskController extends Controller
                 return $this->render('updateTask', ['errors' => $errors, 'userId' => $userId, 'task' => $taskData,  'fileName' => $showName]);
             }
 
-
-
             $file_Id = $task['task_files_id'];
             if (isset($_FILES['task_file']) && $_FILES['task_file']['error'] === UPLOAD_ERR_OK) {
                 $task = $taskModel->findTaskById($taskId);
@@ -281,7 +279,7 @@ class TaskController extends Controller
             } else if (!empty($file_Id)){
                 $updateResult = $taskModel->updateText($taskId, $text, $dateTime, $file_Id);
                 if ($updateResult) {
-                    header('Location: /allTasks/' . $taskId);
+                    header('Location: /allTasks/' . $userId);
                 } else {
                     header('Location: /allTasks/update/' . $taskId);
                 }

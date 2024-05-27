@@ -54,7 +54,13 @@ require_once __DIR__ . '/../model/TaskFile.php';
                         Choose file
                     </label>
                     <input id="file-input" type="file" name="task_file" onchange="fileNameUpdate(this)">
-                    <span id="file-name"></span>
+                    <span id="file-name"><?php
+                        if (!empty($fileName)) {
+                            echo $fileName;
+                            echo " <a class='delete-task-button' style='margin-left: 60px' href='/admin/showAllUsers/allTasks/updatePage/deleteFile/$id_update'> Delete Image </a>";
+
+                        }
+                        ?></span>
                 </div>
 
                 <?php
