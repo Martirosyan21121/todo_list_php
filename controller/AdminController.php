@@ -52,7 +52,6 @@ class AdminController extends Controller
         }
         return $this->render('updateAdmin', ['admin' => $admin]);
     }
-
     public function deleteAdminPic(Request $request)
     {
         $adminId = (int)$request->getRouteParams()['id'] ?? null;
