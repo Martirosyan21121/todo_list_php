@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use model\AuthMiddleware;
 use model\Todo;
 use model\User;
 use model\UserPic;
@@ -10,9 +11,15 @@ use thecodeholic\phpmvc\Request;
 
 require_once 'model\User.php';
 require_once 'model\UserPic.php';
+require_once 'model\AuthMiddleware.php';
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->registerMiddleware(new AuthMiddleware(['singlePage']));
+    }
+
     public function home()
     {
         return $this->render('login');
@@ -45,7 +52,7 @@ class UserController extends Controller
         $userModel = new User();
         $taskModel = new Todo();
         $user = $userModel->findUserById($userId);
-
+        var_dump($user); die();
         $count = $taskModel->getTaskCountByUserId($userId);
         $_SESSION['count'] = $count;
 
@@ -64,10 +71,10 @@ class UserController extends Controller
         $status = 3;
         $statusCount = $taskModel->findTaskCountByStatus($userId, $status);
         $_SESSION['status3'] = $statusCount;
-        if (empty($user['files_id'])){
+        if (empty($user['files_id'])) {
             $_SESSION['pic_path'] = null;
         }
-            return $this->render('singlePage', ['user' => $user]);
+        return $this->render('singlePage', ['user' => $user]);
     }
 
     public function login()
@@ -175,7 +182,6 @@ class UserController extends Controller
             if ($registrationResult) {
                 $userData = $userModel->findUserByEmail($email);
                 $userModel->userRegisterData($userData);
-
             } else {
                 header('Location: /register');
             }

@@ -1,30 +1,34 @@
 <?php
 
 namespace model;
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
 require 'vendor/autoload.php';
+
 class Mailer
 {
-    public function sendMail($to, $subject, $body) {
+    public function sendMail($to, $subject, $body)
+    {
         $mail = new PHPMailer(true);
 
         try {
             $mail->SMTPDebug = 0;
             $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
-            $mail->SMTPAuth   = true;
-            $mail->Username   = 'your-email@gmail.com';
-            $mail->Password   = 'your-email-password';
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'nmartirosyan074@gmail.com';
+            $mail->Password = 'pbedhooopxrnpgra';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
+            $mail->Port = 587;
 
-            $mail->setFrom('your-email@gmail.com', 'Mailer');
+            $mail->setFrom('nmartirosyan074@gmail.com', 'Mailer');
             $mail->addAddress($to);
 
             $mail->isHTML(true);
             $mail->Subject = $subject;
-            $mail->Body    = $body;
+            $mail->Body = $body;
             $mail->AltBody = strip_tags($body);
 
             $mail->send();

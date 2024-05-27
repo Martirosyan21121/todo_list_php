@@ -2,15 +2,19 @@
 
 use controller\AdminController;
 use controller\TaskController;
+use model\AuthMiddleware;
 use model\User;
 use controller\UserController;
+use controller\MailerController;
 use thecodeholic\phpmvc\Application;
 
 require_once 'vendor/autoload.php';
 require_once 'model/User.php';
+require_once 'model/AuthMiddleware.php';
 require_once 'controller/UserController.php';
 require_once 'controller/TaskController.php';
 require_once 'controller/AdminController.php';
+require_once 'controller/MailerController.php';
 
 $config = [
     'userClass' => User::class,
@@ -34,6 +38,8 @@ $app->router->get('/user/deletePic/{id}', [UserController::class, 'deletePic']);
 $app->router->post('/user/update/{id}', [UserController::class, 'updateUser']);
 $app->router->post('/register/user', [UserController::class, 'registerUser']);
 $app->router->post('/login', [UserController::class, 'login']);
+// gmail
+$app->router->get('/register/gmailSend/{id}', [MailerController::class, 'mailerForRegister']);
 // task
 $app->router->get('/allTasks/{id}', [TaskController::class, 'allUserTasks']);
 $app->router->get('/allTasks/addTask/{id}', [TaskController::class, 'addTask']);

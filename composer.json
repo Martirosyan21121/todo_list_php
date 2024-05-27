@@ -15,5 +15,15 @@
     "vlucas/phpdotenv": "^5.6",
     "ext-pdo": "*",
     "phpmailer/phpmailer": "^6.9"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "controller\\": "controller/",
+      "model\\": "model/",
+      "middleware\\": "middleware/"
+    }
   }
 }
+
+
