@@ -8,9 +8,7 @@ require_once __DIR__ . '/../database/DBConnection.php';
 
 class TaskFile extends DBConnection
 {
-
     protected mysqli $connection;
-
     public function __construct()
     {
         parent::__construct();
@@ -43,7 +41,6 @@ class TaskFile extends DBConnection
         $stmt->close();
         return $file;
     }
-
     public function deleteFileById($fileId)
     {
         $sql = "DELETE FROM todo.files WHERE id = ?";

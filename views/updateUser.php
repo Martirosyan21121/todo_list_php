@@ -21,7 +21,6 @@
     <div class="main-agileinfo">
         <div class="agileits-top">
 
-
             <?php
             if (isset($user)) {
             $user_data = $user;
@@ -53,7 +52,6 @@
                         if (!empty($picName)) {
                             echo $picName;
                             echo " <a class='delete-task-button' style='margin-left: 60px' href='/user/deletePic/$user_id'> Delete Image </a>";
-
                         }
                         ?></span>
                 </div>
