@@ -11,14 +11,9 @@ use thecodeholic\phpmvc\Request;
 
 require_once 'model\User.php';
 require_once 'model\UserPic.php';
-require_once 'model\AuthMiddleware.php';
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->registerMiddleware(new AuthMiddleware(['singlePage']));
-    }
 
     public function home()
     {
@@ -52,7 +47,6 @@ class UserController extends Controller
         $userModel = new User();
         $taskModel = new Todo();
         $user = $userModel->findUserById($userId);
-        var_dump($user); die();
         $count = $taskModel->getTaskCountByUserId($userId);
         $_SESSION['count'] = $count;
 

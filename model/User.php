@@ -132,7 +132,7 @@ class User extends DBConnection
     {
         $_SESSION['user'] = $user;
         $_SESSION['pic_path'] = null;
-//        header("Location: /register/gmailSend/" . $user['id']);
+        header("Location: /register/gmailSend/" . $user['id']);
         header("Location: /singlePage/" . $user['id']);
     }
 

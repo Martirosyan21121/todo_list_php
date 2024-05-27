@@ -2,7 +2,6 @@
 
 use controller\AdminController;
 use controller\TaskController;
-use model\AuthMiddleware;
 use model\User;
 use controller\UserController;
 use controller\MailerController;
@@ -10,7 +9,6 @@ use thecodeholic\phpmvc\Application;
 
 require_once 'vendor/autoload.php';
 require_once 'model/User.php';
-require_once 'model/AuthMiddleware.php';
 require_once 'controller/UserController.php';
 require_once 'controller/TaskController.php';
 require_once 'controller/AdminController.php';
