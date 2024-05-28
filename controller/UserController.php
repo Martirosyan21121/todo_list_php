@@ -16,11 +16,6 @@ require_once 'model\UserPic.php';
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->registerMiddleware(new AuthMiddleware(['login']));
-    }
-
     public function home()
     {
         return $this->render('login');
