@@ -495,12 +495,12 @@ class AdminController extends Controller
         $userId = $task['user_id'];
         if (!empty($taskFile)) {
             $fileName = $taskFile['files_name'];
-            $showName = substr($fileName, -4);
-            return $this->render('updateTaskByAdmin', ['task' => $task, 'userId' => $userId, 'fileName' => $showName]);
+            $subName = strrpos($fileName, '.');
+            $showName = substr($fileName, $subName + 1);
+            return $this->render('updateTaskByAdmin', ['task' => $task, 'userId' => $userId, 'fileName' => '.'.$showName]);
         }
         return $this->render('updateTaskByAdmin', ['task' => $task, 'userId' => $userId]);
     }
-
 
     public function deleteFileByAdmin(Request $request)
     {

@@ -50,7 +50,7 @@ if ($user && $user['user_type'] === 'USER') {
 
     $app->router->post('/allTasks/update/updateTask/{id}', [TaskController::class, 'updateTask']);
     $app->router->post('/allTasks/addTask/saveTask/{id}', [TaskController::class, 'saveTask']);
-}elseif ($user && $user['user_type'] === 'ADMIN') {
+}else if ($user && $user['user_type'] === 'ADMIN') {
     $app->router->get('/adminPage', [AdminController::class, 'adminSinglePageShow']);
     $app->router->get('/adminPage/{id}', [AdminController::class, 'adminSinglePage']);
     $app->router->get('/user/deleteAdminPic/{id}', [AdminController::class, 'deleteAdminPic']);

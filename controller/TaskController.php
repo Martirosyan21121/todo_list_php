@@ -193,8 +193,9 @@ class TaskController extends Controller
         $userId = $task['user_id'];
         if (!empty($taskFile)) {
             $fileName = $taskFile['files_name'];
-            $showName = substr($fileName, -4);
-            return $this->render('updateTask', ['task' => $task, 'userId' => $userId, 'fileName' => $showName]);
+            $subName = strrpos($fileName, '.');
+            $showName = substr($fileName, $subName + 1);
+            return $this->render('updateTask', ['task' => $task, 'userId' => $userId, 'fileName' => '.'.$showName]);
         }
         return $this->render('updateTask', ['task' => $task, 'userId' => $userId]);
     }
@@ -208,8 +209,6 @@ class TaskController extends Controller
         if ($taskId !== null && $status !== null) {
             $taskModel->updateStatus($taskId, $status);
         }
-        var_dump($taskId);
-
         $task = $taskModel->findTaskById($taskId);
         $userId = $task['user_id'];
         header('Location: /allTasks/' . $userId);
