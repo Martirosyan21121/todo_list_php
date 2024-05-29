@@ -7,15 +7,14 @@ use model\User;
 use model\UserPic;
 use thecodeholic\phpmvc\Application;
 use thecodeholic\phpmvc\Controller;
-use thecodeholic\phpmvc\middlewares\AuthMiddleware;
 use thecodeholic\phpmvc\Request;
-use thecodeholic\phpmvc\Response;
 
 require_once 'model\User.php';
 require_once 'model\UserPic.php';
 
 class UserController extends Controller
 {
+
     public function home()
     {
         return $this->render('login');
@@ -23,7 +22,6 @@ class UserController extends Controller
 
     public function register()
     {
-        $this->setLayout('main');
         return $this->render('register');
 
     }
@@ -33,10 +31,10 @@ class UserController extends Controller
         return $this->render('accountDeactivate');
     }
 
-    public function logout(Request $request, Response $response)
+    public function logout()
     {
-        Application::$app->logout();
-        $response->redirect('/');
+        $user = new User();
+        $user->logout();
     }
 
     public function singlePageShow()
@@ -112,9 +110,8 @@ class UserController extends Controller
                     $userPic->userPicPath(null, $email);
                 }
                 $user1 = $userModel->findUserByEmail($email);
-                $userId = $user1['id'];
-                Application::$app->user = $user1;
 
+                $userId = $user1['id'];
                 $count = $taskModel->getTaskCountByUserId($userId);
                 $_SESSION['count'] = $count;
 

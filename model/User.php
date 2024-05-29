@@ -150,11 +150,8 @@ class User extends DBConnection
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-
         session_unset();
-
         session_destroy();
-        var_dump($_SESSION);
         header('Location: /');
         exit();
     }
